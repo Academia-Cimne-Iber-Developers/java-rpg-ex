@@ -1,17 +1,16 @@
 package models;
 
-import managers.GestorItems;
 
 public class Ubicacion {
     private String nombre;
     private String descripcion;
-    private GestorItems gestorItems;
     private Enemigo enemigoActual;
+    private InventarioUbicacion inventario;
 
     public Ubicacion(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.gestorItems = new GestorItems(null);
+        this.inventario = new InventarioUbicacion();
     }
 
     public String getNombre() {
@@ -28,14 +27,6 @@ public class Ubicacion {
 
     public void eliminarEnemigo(){
         this.enemigoActual = null;
-    }
-
-    public void agregarItem(String nombre, int cantidad, int peso) {
-        gestorItems.agregarItem(nombre, cantidad, peso);
-    }
-
-    public Item obtenerItem(String nombre) {
-        return gestorItems.obtenerItem(nombre);
     }
 
     public void setNombre(String nombre) {
@@ -61,7 +52,7 @@ public class Ubicacion {
         return nombre;
     }
 
-    public GestorItems getGestorItems() {
-        return gestorItems;
+    public InventarioUbicacion getInventario() {
+        return inventario;
     }
 }

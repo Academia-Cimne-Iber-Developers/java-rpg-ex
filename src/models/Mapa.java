@@ -17,11 +17,11 @@ public class Mapa {
         agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
         agregarUbicacion("Cueva Profunda", "Una cueva oscura que esconde secretos antiguos.");
 
-        ubicaciones.get("Pueblo Inicio").agregarItem("Pocion", 2, 10);
-        ubicaciones.get("Bosque Oscuro").agregarItem("Espada de madera", 1, 5);
-        ubicaciones.get("Bosque Oscuro").agregarItem("Pocion", 3, 1);
-        ubicaciones.get("Montaña Nevada").agregarItem("Botas de nieve", 1, 3);
-        ubicaciones.get("Cueva Profunda").agregarItem("Gema magica", 1, 1);
+        agregarItemAUbicacion("Pueblo Inicio", "Pocion", 2, 10);
+        agregarItemAUbicacion("Bosque Oscuro", "Espada de madera", 1, 5);
+        agregarItemAUbicacion("Bosque Oscuro", "Pocion", 3, 1);
+        agregarItemAUbicacion("Montaña Nevada", "Botas de nieve", 1, 3);
+        agregarItemAUbicacion("Cueva Profunda", "Gema magica", 1, 1);
 
         Enemigo lobo = new Enemigo("Lobo", 20, 5);
         ubicaciones.get("Bosque Oscuro").setEnemigoActual(lobo);
@@ -30,6 +30,14 @@ public class Mapa {
     public void agregarUbicacion(String nombre, String descripcion) {
         Ubicacion ubicacionNueva = new Ubicacion(nombre, descripcion);
         ubicaciones.put(nombre, ubicacionNueva);
+    }
+
+    private void agregarItemAUbicacion(String nombreUbicacion, String nombreItem, int cantidad, int peso) {
+        Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
+        if (ubicacion != null) {
+            Item item = new Item(nombreItem, cantidad, peso);
+            ubicacion.getInventario().agregarItem(item);
+        }
     }
 
     public Ubicacion getUbicacion(String nombre) {

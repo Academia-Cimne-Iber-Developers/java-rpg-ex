@@ -1,49 +1,46 @@
 package managers;
 
-import java.util.Map;
-
 import models.Enemigo;
-import models.Item;
 import models.Jugador;
 import models.Ubicacion;
-import ui.Interfaz;
 
 public class GestorExploracion {
   private Jugador jugador;
-  private Interfaz interfaz;
 
-  public GestorExploracion(Jugador jugador, Interfaz interfaz) {
+  public GestorExploracion(Jugador jugador) {
     this.jugador = jugador;
-    this.interfaz = interfaz;
   }
 
-  public void viajar(Ubicacion nuevaUbicacion) {
+  public String viajar(Ubicacion nuevaUbicacion) {
     jugador.setUbicacionActual(nuevaUbicacion);
-    interfaz.mostrarMensaje("Has viajado a " + jugador.getUbicacionActual().getNombre());
     explorarUbicacion();
+    String resultado = "Has viajado a " + jugador.getUbicacionActual().getNombre();
+    return resultado;
+
   }
 
   public String explorarUbicacion() {
-      String resultado = "Estás en: " + jugador.getUbicacionActual().getNombre() + "\n" + jugador.getUbicacionActual().getDescripcion();
+    Ubicacion ubicacionActual = jugador.getUbicacionActual();
+    StringBuilder resultado = new StringBuilder();
+    resultado.append("Estás en: ").append(ubicacionActual.getNombre()).append("\n");
+    resultado.append(ubicacionActual.getDescripcion()).append("\n");
 
+    Enemigo enemigo = ubicacionActual.getEnemigoActual();
+    if (enemigo == null) {
+        resultado.append("- No hay enemigos en esta ubicación.\n");
+    } else {
+        resultado.append("- Enemigo: ").append(enemigo.getNombre())
+                 .append(" | Vida: ").append(enemigo.getVida()).append("\n");
+    }
 
-      Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
+    String itemsEnUbicacion = ubicacionActual.getInventario().listaItems();
+    if (!itemsEnUbicacion.isEmpty()) {
+        resultado.append("- Items en esta ubicación:\n");
+        resultado.append(itemsEnUbicacion);
+    } else {
+        resultado.append("- No hay items para recoger aquí.\n");
+    }
 
-      if (enemigo == null){
-        resultado += "\n- No hay enemigos en esta ubicación.";
-      } else {
-        resultado += "\n- Enemigo: " + enemigo.getNombre() + " | Vida: " + enemigo.getVida();
-      }
-        
-      Map<String, Item> itemsEnUbicacion = jugador.getUbicacionActual().getGestorItems().getItems();
-      if (!itemsEnUbicacion.isEmpty()) {
-          resultado += "\n- Items en esta ubicación:";
-          for (Item item : itemsEnUbicacion.values()) {
-              resultado += "\n" + item.getNombre() + ": " + item.getCantidad();
-          }
-      } else {
-          resultado += "\n- No hay items para recoger aquí.";
-      }
-      return resultado;
+    return resultado.toString();
   }
 }

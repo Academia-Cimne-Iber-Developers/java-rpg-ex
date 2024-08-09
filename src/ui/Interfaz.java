@@ -20,6 +20,11 @@ public class Interfaz {
         mostrarOpciones();
     }
 
+    public String pedirEntrada(String mensaje) {
+        System.out.print(mensaje);
+        return scanner.nextLine();
+    }
+
     private void mostrarInfoJugador() {
         System.out.println("=== ESTADO DEL JUGADOR ===");
         System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", 
@@ -37,7 +42,7 @@ public class Interfaz {
 
     private void mostrarOpciones() {
         System.out.println("\n¿Qué querés hacer?");
-        System.out.println("[E]xplorar   [I]nventario   [L]uchar   [M]over   [S]alir");
+        System.out.println("[E]xplorar   [I]nventario   [R]ecoger Item   [D]ejar Item   [L]uchar   [M]over   [S]alir");
         System.out.print("Elegí una opción: ");
     }
 
