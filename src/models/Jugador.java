@@ -1,13 +1,13 @@
 package models;
 
 public class Jugador extends Entidad {
-  private Inventario inventario;
+  private InventarioJugador inventario;
   private Ubicacion ubicacionActual;
   private int capacidadMax = 100;
 
   public Jugador(String nombre, Ubicacion ubicacionInicial) {
     super(nombre, 100, 15);
-    this.inventario = new Inventario(capacidadMax, this);
+    this.inventario = new InventarioJugador(capacidadMax);
     this.ubicacionActual = ubicacionInicial;
   }
 
@@ -26,7 +26,7 @@ public class Jugador extends Entidad {
 }
 
   public void curarse() {
-    if (inventario.tieneItem("Pocion")) {
+    if (inventario.tieneItem("Pocion", 1)) {
         this.vida += 20;
         if (this.vida > 100) this.vida = 100;
         inventario.removerItem("Pocion", 1);
@@ -37,18 +37,18 @@ public class Jugador extends Entidad {
 }
 
   public String mostrarInventario() {
-      return inventario.mostrarInventario();
+      return inventario.listaItems();
   }
 
   public Ubicacion getUbicacionActual() {
     return ubicacionActual;
   }
 
-  public Inventario getInventario() {
+  public InventarioJugador getInventario() {
     return inventario;
   }
 
-  public void setInventario(Inventario inventario) {
+  public void setInventario(InventarioJugador inventario) {
     this.inventario = inventario;
   }
 

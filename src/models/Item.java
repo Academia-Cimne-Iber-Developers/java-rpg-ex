@@ -19,6 +19,14 @@ public class Item {
       return cantidad;
   }
 
+  public void aumentarCantidad(int cantidad) {
+      this.cantidad += cantidad;
+  }
+
+  public void disminuirCantidad(int cantidad) {
+      this.cantidad -= cantidad;
+  }
+
   public void setCantidad(int cantidad) {
       this.cantidad = cantidad;
   }

@@ -20,6 +20,11 @@ public class Interfaz {
         mostrarOpciones();
     }
 
+    public String pedirEntrada(String mensaje) {
+        System.out.print(mensaje);
+        return scanner.nextLine();
+    }
+
     private void mostrarInfoJugador() {
         System.out.println("=== ESTADO DEL JUGADOR ===");
         System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", 
