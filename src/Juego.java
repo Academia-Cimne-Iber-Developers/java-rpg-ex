@@ -33,6 +33,12 @@ public class Juego {
                 case "e":
                     explorarUbicacion();
                     break;
+                case "v":
+                    verMapa();
+                    break;
+                case "m":
+                    moverJugador();
+                    break;
                 case "i":
                     interfaz.mostrarInventario();
                     break;
@@ -42,11 +48,10 @@ public class Juego {
                 case "d":
                     dejarItem();
                     break;
+                case "u":
+                    usarItem();
                 case "l":
                     luchar();
-                    break;
-                case "m":
-                    moverJugador();
                     break;
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
@@ -62,11 +67,15 @@ public class Juego {
         interfaz.mostrarResultadoExploracion(resultado);
     }
 
+    private void verMapa(){
+        interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
+    }
+
     private void recogerItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        if (gestorInventario.moverItem(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
+        if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item recogido con éxito.");
         } else {
             interfaz.mostrarMensaje("No se pudo recoger el item.");
@@ -77,11 +86,18 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        if (gestorInventario.moverItem(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad)) {
+        if (gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item dejado con éxito.");
         } else {
             interfaz.mostrarMensaje("No se pudo dejar el item.");
         }
+    }
+
+    private void usarItem(){
+        String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
+
+        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+        interfaz.mostrarMensaje(resultado);
     }
 
     private void luchar() {

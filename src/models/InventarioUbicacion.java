@@ -7,47 +7,55 @@ import managers.Inventario;
 
 public class InventarioUbicacion implements Inventario {
 
-  private Map<String, Item> items;
+  private Map<String, ObjetoInventario> objetos;
 
   public InventarioUbicacion() {
-    this.items = new HashMap<>();
+    this.objetos = new HashMap<>();
   }
 
   @Override
-  public boolean agregarItem(Item item) {
-    if (items.containsKey(item.getNombre())) {
-      items.get(item.getNombre()).aumentarCantidad(item.getCantidad());
-    } else {
-      items.put(item.getNombre(), item);
-    }
-    return true;
+  public boolean agregarObjeto(ObjetoInventario objeto) {
+      if (objetos.containsKey(objeto.getNombre())) {
+          ObjetoInventario objetoExistente = objetos.get(objeto.getNombre());
+          objetoExistente.setCantidad(objetoExistente.getCantidad() + objeto.getCantidad());
+      } else {
+          objetos.put(objeto.getNombre(), objeto);
+      }
+      return true;
   }
 
   @Override
-  public Item removerItem(String nombre, int cantidad) {
-    if (items.containsKey(nombre)) {
-        Item item = items.get(nombre);
-        if (item.getCantidad() >= cantidad) {
-            item.disminuirCantidad(cantidad);
-            if (item.getCantidad() == 0) {
-                items.remove(nombre);
-            }
-            return new Item(item.getNombre(), cantidad, item.getPeso());
-        }
-    }
-    return null;
+  public ObjetoInventario removerObjeto(String nombre, int cantidad) {
+      if (objetos.containsKey(nombre)) {
+          ObjetoInventario itemExistente = objetos.get(nombre);
+          if (itemExistente.getCantidad() > cantidad) {
+              Item itemExtraido = new Item(
+                  itemExistente.getNombre(),
+                  cantidad,
+                  itemExistente.getPeso(),
+                  itemExistente.getEfecto(),
+                  itemExistente.esConsumible()
+              );
+              itemExistente.disminuirCantidad(cantidad);
+              return itemExtraido;
+          } else if (itemExistente.getCantidad() == cantidad) {
+              return objetos.remove(nombre);
+          }
+      }
+      return null;
   }
 
   @Override
-  public boolean tieneItem(String nombre, int cantidad) {
-    return items.containsKey(nombre) && items.get(nombre).getCantidad() >= cantidad;
+  public boolean tieneObjeto(String nombre, int cantidad) {
+      return objetos.containsKey(nombre) && objetos.get(nombre).getCantidad() >= cantidad;
   }
 
   @Override
-  public String listaItems() {
-    StringBuilder sb = new StringBuilder("\n");
-      for (Item item : items.values()) {
-          sb.append(item.getNombre()).append(": ").append(item.getCantidad()).append("\n");
+  public String listarObjetos() {
+      StringBuilder sb = new StringBuilder("");
+      for (ObjetoInventario objeto : objetos.values()) {
+          sb.append(objeto.getNombre()).append(": ").append(objeto.getCantidad())
+            .append(objeto.esConsumible() ? " (Consumible)" : "").append("\n");
       }
       return sb.toString();
   }

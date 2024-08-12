@@ -17,13 +17,22 @@ public class Mapa {
         agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
         agregarUbicacion("Cueva Profunda", "Una cueva oscura que esconde secretos antiguos.");
 
-        agregarItemAUbicacion("Pueblo Inicio", "Pocion", 2, 10);
-        agregarItemAUbicacion("Bosque Oscuro", "Espada de madera", 1, 5);
-        agregarItemAUbicacion("Bosque Oscuro", "Pocion", 3, 1);
-        agregarItemAUbicacion("Montaña Nevada", "Botas de nieve", 1, 3);
-        agregarItemAUbicacion("Cueva Profunda", "Gema magica", 1, 1);
+        Item pocionCuracion = new Item("Pocion", 2, 10, new EfectoCuracion(20), true); // Consumible
+        agregarItemAUbicacion("Pueblo Inicio", pocionCuracion);
 
-        Enemigo lobo = new Enemigo("Lobo", 20, 5);
+        Item espada = new Item("Espada de madera", 1, 15, null, false); // No consumible
+        agregarItemAUbicacion("Bosque Oscuro", espada);
+
+        Item pociones = new Item("Pocion", 3, 10, new EfectoCuracion(20), true); // Consumible
+        agregarItemAUbicacion("Bosque Oscuro", pociones);
+
+        Item botasNieve = new Item("Botas de nieve", 1, 5, null, false); // No consumible
+        agregarItemAUbicacion("Montaña Nevada", botasNieve);
+
+        Item gemaMagica = new Item("Gema magica", 1, 5, new EfectoCuracion(50), true); // Consumible
+        agregarItemAUbicacion("Cueva Profunda", gemaMagica);
+
+        Enemigo lobo = new Enemigo("Lobo", 20, 40);
         ubicaciones.get("Bosque Oscuro").setEnemigoActual(lobo);
     }
 
@@ -32,11 +41,10 @@ public class Mapa {
         ubicaciones.put(nombre, ubicacionNueva);
     }
 
-    private void agregarItemAUbicacion(String nombreUbicacion, String nombreItem, int cantidad, int peso) {
+    private void agregarItemAUbicacion(String nombreUbicacion, Item item) {
         Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
         if (ubicacion != null) {
-            Item item = new Item(nombreItem, cantidad, peso);
-            ubicacion.getInventario().agregarItem(item);
+            ubicacion.getInventario().agregarObjeto(item);
         }
     }
 
@@ -44,10 +52,14 @@ public class Mapa {
         return ubicaciones.get(nombre);
     }
 
-    public void mostrarMapa() {
-        System.out.println("Mapa del mundo:");
+    public String mostrarMapa() {
+        StringBuilder mapa = new StringBuilder();
+        mapa.append("Mapa del mundo:\n");
         for (String ubicacion : ubicaciones.keySet()) {
-            System.out.println("- " + ubicacion);
+            mapa.append("- ")
+                .append(ubicacion)
+                .append("\n");
         }
+        return mapa.toString();
     }
 }

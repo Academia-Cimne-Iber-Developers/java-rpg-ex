@@ -42,7 +42,11 @@ public class Interfaz {
 
     private void mostrarOpciones() {
         System.out.println("\n¿Qué querés hacer?");
-        System.out.println("[E]xplorar   [I]nventario   [R]ecoger Item   [D]ejar Item   [L]uchar   [M]over   [S]alir");
+        System.out.println("[E]xplorar   [M]over   [V]er mapa");
+        System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
+        System.out.println("[L]uchar");
+        System.out.println("====================================");
+        System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");
     }
 

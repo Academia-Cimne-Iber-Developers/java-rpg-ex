@@ -1,14 +1,18 @@
 package models;
 
-public class Item {
+public class Item implements ObjetoInventario {
   private String nombre;
   private int cantidad;
   private int peso;
+  private EfectoItem efecto;
+  private boolean esConsumible;
 
-  public Item(String nombre, int cantidad, int peso) {
+  public Item(String nombre, int cantidad, int peso, EfectoItem efecto, boolean esConsumible) {
       this.nombre = nombre;
       this.cantidad = cantidad;
       this.peso = peso;
+      this.efecto = efecto;
+      this.esConsumible = esConsumible;
   }
 
   public String getNombre() {
@@ -33,5 +37,21 @@ public class Item {
 
   public int getPeso() {
     return peso;
+  }
+
+  public void usar(Jugador jugador, String nombre){
+    if (esConsumible && efecto != null){
+      efecto.aplicarEfecto(jugador, nombre);
+    }
+  }
+
+  @Override
+  public boolean esConsumible() {
+      return esConsumible;
+  }
+
+  @Override
+  public EfectoItem getEfecto() {
+      return efecto;
   }
 }

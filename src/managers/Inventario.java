@@ -1,11 +1,11 @@
 package managers;
 
-import models.Item;
+import models.ObjetoInventario;
 
 public interface Inventario {
-  boolean agregarItem(Item item);
-  Item removerItem(String nombre, int cantidad);
-  boolean tieneItem(String nombre, int cantidad);
-  String listaItems();
+  boolean agregarObjeto(ObjetoInventario objeto);
+  ObjetoInventario removerObjeto(String nombre, int cantidad);
+  boolean tieneObjeto(String nombre, int cantidad);
+  String listarObjetos();
   int espacioDisponible();
 }
