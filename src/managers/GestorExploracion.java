@@ -3,6 +3,7 @@ package managers;
 import models.Enemigo;
 import models.Jugador;
 import models.Ubicacion;
+import models.Mapa;
 
 public class GestorExploracion {
   private Jugador jugador;
@@ -19,6 +20,10 @@ public class GestorExploracion {
 
   }
 
+  public String verMapa(Mapa mapa){
+    return mapa.mostrarMapa();
+  }
+
   public String explorarUbicacion() {
     Ubicacion ubicacionActual = jugador.getUbicacionActual();
     StringBuilder resultado = new StringBuilder();
@@ -33,7 +38,7 @@ public class GestorExploracion {
                  .append(" | Vida: ").append(enemigo.getVida()).append("\n");
     }
 
-    String itemsEnUbicacion = ubicacionActual.getInventario().listaItems();
+    String itemsEnUbicacion = ubicacionActual.getInventario().listarObjetos();
     if (!itemsEnUbicacion.isEmpty()) {
         resultado.append("- Items en esta ubicación:\n");
         resultado.append(itemsEnUbicacion);

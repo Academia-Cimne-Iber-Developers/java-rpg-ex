@@ -25,19 +25,12 @@ public class Jugador extends Entidad {
     return resultado;
 }
 
-  public void curarse() {
-    if (inventario.tieneItem("Pocion", 1)) {
-        this.vida += 20;
-        if (this.vida > 100) this.vida = 100;
-        inventario.removerItem("Pocion", 1);
-        System.out.println("Usaste una poción, tu salud es: " + this.vida);
-    } else {
-        System.out.println("No te quedan pociones para curarte.");
-    }
-}
+  public void curarse(int cantidadCuracion, String nombre) {
+    this.vida = Math.min(100, getVida() + cantidadCuracion);
+  }
 
   public String mostrarInventario() {
-      return inventario.listaItems();
+    return inventario.listarObjetos();
   }
 
   public Ubicacion getUbicacionActual() {
