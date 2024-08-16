@@ -4,6 +4,7 @@ import managers.GestorInventario;
 import models.Enemigo;
 import models.Jugador;
 import models.Mapa;
+import models.ResultadoUsoItem;
 import models.Ubicacion;
 import ui.Interfaz;
 
@@ -98,9 +99,44 @@ public class Juego {
     private void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
-        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
-        interfaz.mostrarMensaje(resultado);
+        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        interfaz.mostrarMensaje(resultado.getMensaje());
+
+        if (resultado.isExito()) {
+            String nombreItemUsado = resultado.getItemUsado().getNombre().toLowerCase();
+
+            switch (nombreItemUsado) {
+                case "poción de curación":
+                    jugador.curarse(50, nombreItem);
+                    interfaz.mostrarMensaje("¡El jugador ha sido curado en 50 puntos! Vida actual: " + jugador.getVida());
+                    break;
+
+                case "poción de energía":
+                    jugador.recuperarEnergia(30);
+                    interfaz.mostrarMensaje("¡La energía del jugador ha aumentado en 30 puntos! Energía actual: " + jugador.getEnergia());
+                    break;
+
+                case "elixir de fuerza":
+                    jugador.incrementarFuerzaTemporalmente(10, 60000);
+                    interfaz.mostrarMensaje("¡La fuerza del jugador ha aumentado en 10 puntos por 60 segundos! Fuerza actual: " + jugador.getFuerza());
+                    break;
+
+                default:
+                    interfaz.mostrarMensaje("El item usado no tiene un efecto definido.");
+                    break;
+            }
+        } else {
+            if (resultado.getItemUsado() == null) {
+                interfaz.mostrarMensaje("El item no fue encontrado en el inventario.");
+            } else if (!resultado.getItemUsado().esConsumible()) {
+                interfaz.mostrarMensaje("El item no es consumible.");
+            } else {
+                interfaz.mostrarMensaje("Hubo un problema al usar el item. Por favor, inténtalo de nuevo.");
+            }
+        }
     }
+
 
     private void luchar() {
         Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
