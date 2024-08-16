@@ -17,7 +17,7 @@ public class Juego {
 
     public Juego() {
         mapa = new Mapa();
-        jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
+        jugador = new Jugador("God", mapa.getUbicacion("Pueblo Inicio"));
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
@@ -67,7 +67,7 @@ public class Juego {
         interfaz.mostrarResultadoExploracion(resultado);
     }
 
-    private void verMapa(){
+    private void verMapa() {
         interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
     }
 
@@ -75,7 +75,8 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
+        if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(),
+                nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item recogido con éxito.");
         } else {
             interfaz.mostrarMensaje("No se pudo recoger el item.");
@@ -86,14 +87,15 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        if (gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad)) {
+        if (gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(),
+                nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item dejado con éxito.");
         } else {
             interfaz.mostrarMensaje("No se pudo dejar el item.");
         }
     }
 
-    private void usarItem(){
+    private void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
         String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
