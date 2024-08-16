@@ -1,9 +1,8 @@
 package ui;
 import java.util.Scanner;
 
-import models.Jugador;
-import models.Mapa;
-import models.Ubicacion;
+import managers.GestorMisiones;
+import models.*;
 
 public class Interfaz {
     private static final Scanner scanner = new Scanner(System.in);
@@ -20,6 +19,32 @@ public class Interfaz {
         mostrarOpciones();
     }
 
+    public void mostrarMisiones(GestorMisiones gestorMisiones) {
+        System.out.println("=== Misiones Activas ===");
+        if (gestorMisiones.getMisionesActivas().isEmpty()) {
+            System.out.println("No tienes misiones activas en este momento.");
+        } else {
+            for (Mision mision : gestorMisiones.getMisionesActivas()) {
+                String estado = mision.estaCompleta() ? "[Completada]" : "[En progreso]";
+                System.out.println("- " + mision.getDescripcion() + " " + estado);
+            }
+        }
+
+        System.out.println("\n=== Misiones Completadas ===");
+        if (gestorMisiones.getMisionesCompletadas().isEmpty()) {
+            System.out.println("No has completado ninguna misión todavía.");
+        } else {
+            for (Mision mision : gestorMisiones.getMisionesCompletadas()) {
+                System.out.println("- " + mision.getDescripcion() + " [Completada]");
+            }
+        }
+
+        System.out.print("Presioná ENTER para continuar...");
+        scanner.nextLine();  // Pausa antes de volver al menú principal
+    }
+
+
+
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
@@ -27,7 +52,7 @@ public class Interfaz {
 
     private void mostrarInfoJugador() {
         System.out.println("=== ESTADO DEL JUGADOR ===");
-        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", 
+        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n",
                           jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
         System.out.println("============================");
     }
@@ -44,7 +69,7 @@ public class Interfaz {
         System.out.println("\n¿Qué querés hacer?");
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[L]uchar");
+        System.out.println("[L]uchar     [Mis]iones");  // Nueva opción para ver misiones
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");

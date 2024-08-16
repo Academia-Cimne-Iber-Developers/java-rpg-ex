@@ -4,6 +4,8 @@ import models.Enemigo;
 import models.Jugador;
 import models.Ubicacion;
 import models.Mapa;
+import ui.Juego;
+
 
 public class GestorExploracion {
   private Jugador jugador;
@@ -12,12 +14,20 @@ public class GestorExploracion {
     this.jugador = jugador;
   }
 
+  /*public String viajar(Ubicacion nuevaUbicacion, GestorMisiones gestorMisiones, Juego juego) {
+    jugador.setUbicacionActual(nuevaUbicacion);
+    String resultado = explorarUbicacion();
+
+    // Actualiza las misiones después de viajar
+    gestorMisiones.actualizarMisiones(juego);
+
+    return resultado + "\nHas viajado a " + jugador.getUbicacionActual().getNombre();
+  }*/
+
   public String viajar(Ubicacion nuevaUbicacion) {
     jugador.setUbicacionActual(nuevaUbicacion);
-    explorarUbicacion();
     String resultado = "Has viajado a " + jugador.getUbicacionActual().getNombre();
     return resultado;
-
   }
 
   public String verMapa(Mapa mapa){
