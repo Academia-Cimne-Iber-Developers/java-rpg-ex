@@ -1,11 +1,17 @@
+package ui;
+
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
-import models.Enemigo;
-import models.Jugador;
+import managers.GestorMisiones;
 import models.Mapa;
+import models.Jugador;
+import models.Mision;
+import models.MisionExploracion;
 import models.Ubicacion;
-import ui.Interfaz;
+import models.Enemigo;
+
+
 
 public class Juego {
     private Mapa mapa;
@@ -14,6 +20,7 @@ public class Juego {
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
+    private GestorMisiones gestorMisiones;
 
     public Juego() {
         mapa = new Mapa();
@@ -22,7 +29,40 @@ public class Juego {
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
+        gestorMisiones = new GestorMisiones(jugador);
+        inicializarMisiones();
     }
+
+    private void inicializarMisiones() {
+        gestorMisiones.agregarMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
+        //gestorMisiones.agregarMision());
+    }
+
+    public Mapa getMapa() {
+        return mapa;
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    private void moverJugador() {
+        String destino = interfaz.pedirDestinoViaje();
+        Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
+        if (nuevaUbicacion != null) {
+            String resultado = gestorExploracion.viajar(nuevaUbicacion);
+            interfaz.mostrarMensaje(resultado);
+            interfaz.mostrarResultadoViaje(true, destino);
+
+            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva Profunda"
+            if (destino.equals("Cueva Profunda")) {
+                agregarNuevaMision(new MisionExploracion("Explora el fondo de la cueva", "Fondo de la Cueva", 1));
+            }
+        } else {
+            interfaz.mostrarResultadoViaje(false, destino);
+        }
+    }
+
 
     public void iniciar() {
         while (true) {
@@ -50,8 +90,13 @@ public class Juego {
                     break;
                 case "u":
                     usarItem();
+                    break;
                 case "l":
                     luchar();
+                    break;
+                case "mis":
+                    interfaz.mostrarMisiones(gestorMisiones);
+                    System.out.println("Entrando en la opción de mostrar misiones...");  // Depuración
                     break;
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
@@ -59,15 +104,32 @@ public class Juego {
                 default:
                     interfaz.mostrarMensaje("Opción no válida.");
             }
+
+            gestorMisiones.actualizarMisiones(this);
         }
     }
 
     private void explorarUbicacion() {
         String resultado = gestorExploracion.explorarUbicacion();
         interfaz.mostrarResultadoExploracion(resultado);
+
+        // Verificar misiones después de explorar
+        for (Mision mision : gestorMisiones.getMisionesActivas()) {
+            if (mision instanceof MisionExploracion) {
+                ((MisionExploracion) mision).verificarYActualizar(this);  // Verificar la misión solo durante la exploración
+            }
+        }
+
+        // Muestra el mensaje si alguna misión se completó
+        for (Mision mision : gestorMisiones.getMisionesActivas()) {
+            if (mision.estaCompleta()) {
+                interfaz.mostrarMensaje("¡Has completado la misión: " + mision.getDescripcion() + "!");
+            }
+        }
     }
 
-    private void verMapa(){
+
+    private void verMapa() {
         interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
     }
 
@@ -93,7 +155,7 @@ public class Juego {
         }
     }
 
-    private void usarItem(){
+    private void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
         String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
@@ -116,19 +178,15 @@ public class Juego {
         }
     }
 
-    private void moverJugador() {
-        String destino = interfaz.pedirDestinoViaje();
-        Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
-        if (nuevaUbicacion != null) {
-            String resultado = gestorExploracion.viajar(nuevaUbicacion);
-            interfaz.mostrarMensaje(resultado);
-            interfaz.mostrarResultadoViaje(true, destino);
-        } else {
-            interfaz.mostrarResultadoViaje(false, destino);
-        }
+
+    private void agregarNuevaMision(Mision nuevaMision) {
+        gestorMisiones.agregarMision(nuevaMision);
+        interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
     }
 
     public static void main(String[] args) {
         new Juego().iniciar();
     }
+
+
 }
