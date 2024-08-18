@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
@@ -9,6 +10,7 @@ import models.Enemigo;
 import models.IMision;
 import models.Jugador;
 import models.Mapa;
+import models.MisionAtesorar;
 import models.MisionExploracion;
 import models.Ubicacion;
 import ui.Interfaz;
@@ -64,7 +66,10 @@ public class Juego {
                     break;
                 case "ex":
                     crearNuevaMisionExploracion();
-                    break;                    
+                    break;      
+                case "at":
+                    crearNuevaMisionAtesorar();
+                    break;              
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
                     return;
@@ -89,6 +94,8 @@ public class Juego {
 
         if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item recogido con éxito.");
+            //actualicemos las misiones
+            jugador.actualizarMisiones("m_atesorar", nombreItem);
         } else {
             interfaz.mostrarMensaje("No se pudo recoger el item.");
         }
@@ -155,6 +162,26 @@ public class Juego {
         IMision nuevaMision = new MisionExploracion(descripcion, destino, visitasRequeridas); 
         //agregamos la nueva mision
         this.jugador.agregarNuevaMision(nuevaMision);
+        //mostramos el resultado
+        interfaz.mostrarMisiones();
+        
+    }
+
+    private void crearNuevaMisionAtesorar() {
+        //vamos a obtener los posibles items desde el mapa creado
+        Set<String> conjuntoItems = this.mapa.getConjuntoItems();
+        
+        //vamos a elegir un item al azar para crear la nueva mision
+        List<String> listaItems = new ArrayList<>(conjuntoItems);
+        Random random = new Random();
+        String tesoro = listaItems.get(random.nextInt(listaItems.size()));
+
+        int numeroRequerido = random.nextInt(3) + 1;
+        String descripcion = "Obtener " + tesoro + " atesorando " + numeroRequerido + " cantidad de veces.";
+        //vamos a crear una nueva mision        
+        IMision nuevaMisionAtesorar = new MisionAtesorar(descripcion, tesoro, numeroRequerido); 
+        //agregamos la nueva mision
+        this.jugador.agregarNuevaMision(nuevaMisionAtesorar);
         //mostramos el resultado
         interfaz.mostrarMisiones();
         

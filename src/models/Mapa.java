@@ -1,13 +1,17 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Mapa {
     private Map<String, Ubicacion> ubicaciones;
+    private Set<String> conjuntoItems;
 
     public Mapa() {
         ubicaciones = new HashMap<>();
+        conjuntoItems = new HashSet<>();
         inicializarMapa();
     }
 
@@ -45,6 +49,8 @@ public class Mapa {
         Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
         if (ubicacion != null) {
             ubicacion.getInventario().agregarObjeto(item);
+            //agrego el item al conjunto de items
+            conjuntoItems.add(item.getNombre());
         }
     }
 
@@ -65,5 +71,9 @@ public class Mapa {
 
     public Map getUbicaciones() {
         return ubicaciones;
+    }
+
+    public Set getConjuntoItems() {
+        return conjuntoItems;
     }
 }

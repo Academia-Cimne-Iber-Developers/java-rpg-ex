@@ -43,7 +43,7 @@ public class Interfaz {
         System.out.println("\n¿Qué querés hacer?");
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[MI]siones Nuevas Misiones: [Ex]ploracion [AT]esorar");
+        System.out.println("[MI]siones Misiones Disponibles: [Ex]ploracion [AT]esorar");
         System.out.println("[L]uchar");
         System.out.println("====================================");
         System.out.println("[S]alir");
