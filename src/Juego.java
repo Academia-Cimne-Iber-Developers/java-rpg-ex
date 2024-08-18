@@ -9,124 +9,85 @@ import ui.Interfaz;
 
 public class Juego {
     private Mapa mapa;
-    private Interfaz interfaz;
     private Jugador jugador;
+    private Interfaz interfaz;
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
+    private ControladorAcciones controladorAcciones;
 
     public Juego() {
-        mapa = new Mapa();
-        jugador = new Jugador("God", mapa.getUbicacion("Pueblo Inicio"));
-        interfaz = new Interfaz(mapa, jugador);
-        gestorCombate = new GestorCombate(jugador, interfaz);
-        gestorExploracion = new GestorExploracion(jugador);
-        gestorInventario = new GestorInventario();
+        this.mapa = new Mapa();
+        this.jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
+        this.interfaz = new Interfaz(mapa, jugador);
+        this.gestorCombate = new GestorCombate(jugador, interfaz);
+        this.gestorExploracion = new GestorExploracion(jugador);
+        this.gestorInventario = new GestorInventario();
+        this.controladorAcciones = new ControladorAcciones(this, interfaz);
     }
 
     public void iniciar() {
         while (true) {
             interfaz.actualizarPantalla();
             String opcion = interfaz.obtenerEntrada();
-
-            switch (opcion) {
-                case "e":
-                    explorarUbicacion();
-                    break;
-                case "v":
-                    verMapa();
-                    break;
-                case "m":
-                    moverJugador();
-                    break;
-                case "i":
-                    interfaz.mostrarInventario();
-                    break;
-                case "r":
-                    recogerItem();
-                    break;
-                case "d":
-                    dejarItem();
-                    break;
-                case "u":
-                    usarItem();
-                case "l":
-                    luchar();
-                    break;
-                case "s":
-                    interfaz.mostrarMensaje("Gracias por jugar!");
-                    return;
-                default:
-                    interfaz.mostrarMensaje("Opción no válida.");
-            }
+            controladorAcciones.procesarAccion(opcion);
         }
     }
 
-    private void explorarUbicacion() {
-        String resultado = gestorExploracion.explorarUbicacion();
-        interfaz.mostrarResultadoExploracion(resultado);
+    public Ubicacion explorarUbicacion() {
+        Ubicacion nuevaUbicacion = gestorExploracion.explorarUbicacion();  
+        interfaz.mostrarResultadoExploracion("Has explorado: " + nuevaUbicacion.getNombre());
+        jugador.setUbicacionActual(nuevaUbicacion);
+        return nuevaUbicacion;
     }
 
-    private void verMapa() {
-        interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
+    public boolean luchar(Enemigo enemigo) {
+        gestorCombate.pelear(enemigo);
+        if (jugador.estaVivo()) {
+            jugador.getUbicacionActual().eliminarEnemigo();
+            interfaz.mostrarMensaje("¡Has derrotado al enemigo!");
+            return true;
+        } else {
+            interfaz.mostrarMensaje("Has sido derrotado. Fin del juego.");
+            System.exit(0);
+            return false;
+        }
     }
 
-    private void recogerItem() {
+    public GestorCombate getGestorCombate() {
+        return gestorCombate;
+    }
+
+    public String verMapa(){
+        return gestorExploracion.verMapa(mapa);
+    }
+
+    public boolean recogerItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(),
-                nombreItem, cantidad)) {
-            interfaz.mostrarMensaje("Item recogido con éxito.");
-        } else {
-            interfaz.mostrarMensaje("No se pudo recoger el item.");
-        }
+        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad);
     }
 
-    private void dejarItem() {
+    public boolean dejarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        if (gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(),
-                nombreItem, cantidad)) {
-            interfaz.mostrarMensaje("Item dejado con éxito.");
-        } else {
-            interfaz.mostrarMensaje("No se pudo dejar el item.");
-        }
+        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
     }
 
-    private void usarItem() {
+    public String usarItem(){
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
-
-        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
-        interfaz.mostrarMensaje(resultado);
+        return gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
     }
 
-    private void luchar() {
-        Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
-        if (enemigo != null) {
-            gestorCombate.pelear(enemigo);
-            if (jugador.estaVivo()) {
-                jugador.getUbicacionActual().eliminarEnemigo();
-                interfaz.mostrarMensaje("Has derrotado al enemigo!");
-            } else {
-                interfaz.mostrarMensaje("Has sido derrotado. Fin del juego.");
-                System.exit(0);
-            }
-        } else {
-            interfaz.mostrarMensaje("- No hay enemigos en esta ubicación.");
-        }
-    }
-
-    private void moverJugador() {
+    public String moverJugador() {
         String destino = interfaz.pedirDestinoViaje();
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
-            String resultado = gestorExploracion.viajar(nuevaUbicacion);
-            interfaz.mostrarMensaje(resultado);
-            interfaz.mostrarResultadoViaje(true, destino);
+            return gestorExploracion.viajar(nuevaUbicacion);
         } else {
-            interfaz.mostrarResultadoViaje(false, destino);
+            return "No se encontró el destino: " + destino;
         }
     }
 
