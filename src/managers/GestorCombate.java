@@ -2,6 +2,7 @@ package managers;
 
 import models.Enemigo;
 import models.Jugador;
+import models.Ubicacion;
 import ui.Interfaz;
 
 public class GestorCombate {
@@ -26,5 +27,11 @@ public class GestorCombate {
     } else {
       interfaz.mostrarMensaje("Moriste, fin del juego.");
     }
+  }
+
+  public Enemigo getEnemigoEnUbicacionActual() {
+    // Implementación para buscar enemigo en la ubicación actual
+    Ubicacion ubicacionActual = jugador.getUbicacionActual();
+    return ubicacionActual.getEnemigoActual(); // Devuelve el enemigo encontrado
   }
 }
