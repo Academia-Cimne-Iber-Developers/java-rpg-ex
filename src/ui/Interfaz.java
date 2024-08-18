@@ -1,6 +1,5 @@
 package ui;
 import java.util.Scanner;
-
 import models.Jugador;
 import models.Mapa;
 import models.Ubicacion;
@@ -44,6 +43,7 @@ public class Interfaz {
         System.out.println("\n¿Qué querés hacer?");
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
+        System.out.println("[MI]siones Nuevas Misiones: [Ex]ploracion [AT]esorar");
         System.out.println("[L]uchar");
         System.out.println("====================================");
         System.out.println("[S]alir");
@@ -64,6 +64,15 @@ public class Interfaz {
         System.out.println("\n=== INVENTARIO ===");
         String resultado = jugador.mostrarInventario();
         System.out.println(resultado);
+        System.out.println("==================");
+        System.out.print("Presioná ENTER para continuar...");
+        scanner.nextLine();
+    }
+
+    public void mostrarMisiones() {
+        System.out.println("\n=== Misiones ===");
+        String respuesta = jugador.mostrarMisiones();
+        System.out.println(respuesta);
         System.out.println("==================");
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();

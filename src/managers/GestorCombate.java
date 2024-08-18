@@ -24,7 +24,7 @@ public class GestorCombate {
     if (jugador.estaVivo()){
       interfaz.mostrarMensaje("Derrotaste a: " + enemigo.getNombre());
     } else {
-      interfaz.mostrarMensaje("Moriste, fin del juego.");
+      interfaz.mostrarMensaje("Moriste, fin del .");
     }
   }
 }

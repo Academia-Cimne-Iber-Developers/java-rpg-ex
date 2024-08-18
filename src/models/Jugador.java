@@ -1,14 +1,18 @@
 package models;
 
+import managers.GestorMisiones;
+
 public class Jugador extends Entidad {
   private InventarioJugador inventario;
+  private GestorMisiones misiones;
   private Ubicacion ubicacionActual;
-  private int capacidadMax = 100;
+  private int capacidadMax = 100;  
 
   public Jugador(String nombre, Ubicacion ubicacionInicial) {
     super(nombre, 100, 15);
     this.inventario = new InventarioJugador(capacidadMax);
     this.ubicacionActual = ubicacionInicial;
+    this.misiones = new GestorMisiones();
   }
 
   @Override
@@ -56,4 +60,24 @@ public class Jugador extends Entidad {
   public void setCapacidadMax(int capacidadMax) {
     this.capacidadMax = capacidadMax;
   }
-}
+
+
+  public String mostrarMisiones(){
+    StringBuilder sb = new StringBuilder();
+    sb.append(misiones.listarMisionesActivas()).append("\n");
+    sb.append(misiones.listarMisionesCompletadas()).append("\n");
+    return sb.toString();
+  }
+
+  public void agregarNuevaMision(IMision nuevaMision){
+    misiones.agregarMision(nuevaMision);
+  }
+
+  public void actualizarMisiones(String tipo, String data){
+    misiones.actualizarMisiones(tipo, data);
+  }
+
+  
+
+
+}//fin de clase

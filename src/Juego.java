@@ -1,9 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
 import models.Enemigo;
+import models.IMision;
 import models.Jugador;
 import models.Mapa;
+import models.MisionExploracion;
 import models.Ubicacion;
 import ui.Interfaz;
 
@@ -52,7 +58,13 @@ public class Juego {
                     usarItem();
                 case "l":
                     luchar();
+                    break;                
+                case "mi":
+                    interfaz.mostrarMisiones();
                     break;
+                case "ex":
+                    crearNuevaMisionExploracion();
+                    break;                    
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
                     return;
@@ -126,6 +138,26 @@ public class Juego {
         } else {
             interfaz.mostrarResultadoViaje(false, destino);
         }
+    }
+
+    private void crearNuevaMisionExploracion() {
+        //vamos a obterner los destinos posibles
+        Map<String, Ubicacion> mapa = new Mapa().getUbicaciones();
+        //voy a crear una lista de las keys de las ubicaciones
+        List<String> destinos = new ArrayList<>(mapa.keySet());
+        //vamos a elegir un destino al azar para crear la nueva mision
+        Random random = new Random();
+        String destino = destinos.get(random.nextInt(destinos.size()));
+
+        int visitasRequeridas = random.nextInt(3) + 1;
+        String descripcion = "Explorar " + destino + " por " + visitasRequeridas + " vez(es).";
+        //vamos a crear una nueva mision        
+        IMision nuevaMision = new MisionExploracion(descripcion, destino, visitasRequeridas); 
+        //agregamos la nueva mision
+        this.jugador.agregarNuevaMision(nuevaMision);
+        //mostramos el resultado
+        interfaz.mostrarMisiones();
+        
     }
 
     public static void main(String[] args) {

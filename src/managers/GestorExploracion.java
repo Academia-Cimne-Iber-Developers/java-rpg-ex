@@ -2,8 +2,8 @@ package managers;
 
 import models.Enemigo;
 import models.Jugador;
-import models.Ubicacion;
 import models.Mapa;
+import models.Ubicacion;
 
 public class GestorExploracion {
   private Jugador jugador;
@@ -14,6 +14,7 @@ public class GestorExploracion {
 
   public String viajar(Ubicacion nuevaUbicacion) {
     jugador.setUbicacionActual(nuevaUbicacion);
+    jugador.actualizarMisiones("m_exploracion", nuevaUbicacion.getNombre());
     explorarUbicacion();
     String resultado = "Has viajado a " + jugador.getUbicacionActual().getNombre();
     return resultado;

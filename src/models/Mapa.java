@@ -62,4 +62,8 @@ public class Mapa {
         }
         return mapa.toString();
     }
+
+    public Map getUbicaciones() {
+        return ubicaciones;
+    }
 }
