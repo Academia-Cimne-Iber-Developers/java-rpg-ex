@@ -17,7 +17,7 @@ public class Juego {
 
     public Juego() {
         mapa = new Mapa();
-        jugador = new Jugador("God", mapa.getUbicacion("Pueblo Inicio"));
+        jugador = new Jugador("MatiasFernando", mapa.getUbicacion("Bosque Oscuro"));
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
