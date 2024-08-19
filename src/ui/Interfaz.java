@@ -1,4 +1,5 @@
 package ui;
+
 import java.util.Scanner;
 
 import managers.GestorMisiones;
@@ -44,7 +45,6 @@ public class Interfaz {
     }
 
 
-
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
@@ -53,7 +53,7 @@ public class Interfaz {
     private void mostrarInfoJugador() {
         System.out.println("=== ESTADO DEL JUGADOR ===");
         System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n",
-                          jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
+                jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
         System.out.println("============================");
     }
 
@@ -94,12 +94,36 @@ public class Interfaz {
         scanner.nextLine();
     }
 
-    public void mostrarResultadoExploracion(String resultado) {
+    public void mostrarResultadoExploracion(String resultado, GestorMisiones gestorMisiones) {
         System.out.println("\n=== RESULTADO DE LA EXPLORACIÓN ===");
         System.out.println(resultado);
         System.out.println("====================================");
+
+        // Verificar si alguna misión se ha completado después de la exploración
+        for (Mision mision : gestorMisiones.getMisionesActivas()) {
+            if (mision instanceof MisionExploracion) {
+                MisionExploracion misionExploracion = (MisionExploracion) mision;
+                if (misionExploracion.esCompletada()) {
+                    System.out.println("¡Has completado la misión: " + misionExploracion.getDescripcion() + "!");
+                } else {
+                    System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() +
+                            " (" + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
+                }
+            }
+        }
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
+    }
+
+
+
+    public void mostrarInfoMision(MisionExploracion mision) {
+        if (mision.esCompletada()) {
+            System.out.println("¡Has completado la misión: " + mision.getDescripcion() + "!");
+        } else {
+            System.out.println("Progreso en misión: " + mision.getDescripcion() +
+                    " (" + mision.getVecesVisitada() + "/" + mision.getVecesRequeridas() + ")");
+        }
     }
 
     public String pedirDestinoViaje() {
