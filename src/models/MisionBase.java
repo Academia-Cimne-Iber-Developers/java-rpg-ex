@@ -1,5 +1,5 @@
 package models;
-import ui.Juego;
+
 public abstract class MisionBase implements Mision {
     protected String descripcion;
     protected boolean completada;
@@ -21,5 +21,6 @@ public abstract class MisionBase implements Mision {
         this.completada = true;
     }
 
-    public abstract void actualizar(Juego juego);
+    // Ahora recibe información abstracta en lugar de un objeto Juego
+    public abstract void actualizar(String ubicacionActual);
 }

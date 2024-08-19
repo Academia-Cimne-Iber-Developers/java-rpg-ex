@@ -1,7 +1,5 @@
 package models;
 
-import ui.Juego;
-
 public class MisionExploracion extends MisionBase {
     private String ubicacionObjetivo;
     private int vecesRequeridas;
@@ -14,22 +12,43 @@ public class MisionExploracion extends MisionBase {
         this.vecesVisitada = 0;
     }
 
-    public void verificarYActualizar(Juego juego) {
-        if (juego.getJugador().getUbicacionActual().getNombre().equals(ubicacionObjetivo)) {
+    @Override
+    public void actualizar(String ubicacionActual) {
+        verificarYActualizar(ubicacionActual);
+    }
+
+    // Método para verificar y actualizar el estado de la misión
+    public void verificarYActualizar(String ubicacionActual) {
+        if (ubicacionActual.equals(ubicacionObjetivo)) {
             vecesVisitada++;
-            System.out.println("Ubicación objetivo alcanzada: " + ubicacionObjetivo);  // Depuración
             if (vecesVisitada >= vecesRequeridas) {
-                completar();  // Marca la misión como completada
-                System.out.println("Misión completada: " + getDescripcion());  // Depuración
+                completar();
             }
-        } else {
-            System.out.println("Ubicación actual: " + juego.getJugador().getUbicacionActual().getNombre());
-            System.out.println("Ubicación objetivo: " + ubicacionObjetivo);
         }
     }
 
-    @Override
-    public void actualizar(Juego juego) {
-        verificarYActualizar(juego);
+    // Método para verificar si la misión está completada
+    public boolean esCompletada() {
+        return estaCompleta();
     }
+
+    // Método para obtener cuántas veces es necesario visitar la ubicación
+    public int getVecesRequeridas() {
+        return vecesRequeridas;
+    }
+
+    // Método para obtener cuántas veces se ha visitado la ubicación
+    public int getVecesVisitadas() {
+        return vecesVisitada;
+    }
+
+    // Métodos adicionales, getters, etc.
+    public String getUbicacionObjetivo() {
+        return ubicacionObjetivo;
+    }
+
+    public String getVecesVisitada() {
+        return vecesVisitada + "/" + vecesRequeridas;
+    }
+
 }
