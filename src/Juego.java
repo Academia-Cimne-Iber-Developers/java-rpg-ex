@@ -1,5 +1,3 @@
-package ui;
-
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
@@ -10,8 +8,7 @@ import models.Mision;
 import models.MisionExploracion;
 import models.Ubicacion;
 import models.Enemigo;
-
-
+import ui.Interfaz;
 
 public class Juego {
     private Mapa mapa;
@@ -35,7 +32,6 @@ public class Juego {
 
     private void inicializarMisiones() {
         gestorMisiones.agregarMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
-        //gestorMisiones.agregarMision());
     }
 
     public Mapa getMapa() {
@@ -62,7 +58,6 @@ public class Juego {
             interfaz.mostrarResultadoViaje(false, destino);
         }
     }
-
 
     public void iniciar() {
         while (true) {
@@ -96,7 +91,6 @@ public class Juego {
                     break;
                 case "mis":
                     interfaz.mostrarMisiones(gestorMisiones);
-                    System.out.println("Entrando en la opción de mostrar misiones...");  // Depuración
                     break;
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
@@ -105,29 +99,22 @@ public class Juego {
                     interfaz.mostrarMensaje("Opción no válida.");
             }
 
-            gestorMisiones.actualizarMisiones(this);
+            String ubicacionActual = jugador.getUbicacionActual().getNombre();
+            gestorMisiones.actualizarMisiones(ubicacionActual);
         }
     }
 
     private void explorarUbicacion() {
         String resultado = gestorExploracion.explorarUbicacion();
-        interfaz.mostrarResultadoExploracion(resultado);
+        interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
 
-        // Verificar misiones después de explorar
+        // Muestra el progreso o finalización de misiones después de explorar
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             if (mision instanceof MisionExploracion) {
-                ((MisionExploracion) mision).verificarYActualizar(this);  // Verificar la misión solo durante la exploración
-            }
-        }
-
-        // Muestra el mensaje si alguna misión se completó
-        for (Mision mision : gestorMisiones.getMisionesActivas()) {
-            if (mision.estaCompleta()) {
-                interfaz.mostrarMensaje("¡Has completado la misión: " + mision.getDescripcion() + "!");
+                interfaz.mostrarInfoMision((MisionExploracion) mision);
             }
         }
     }
-
 
     private void verMapa() {
         interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
@@ -178,7 +165,6 @@ public class Juego {
         }
     }
 
-
     private void agregarNuevaMision(Mision nuevaMision) {
         gestorMisiones.agregarMision(nuevaMision);
         interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
@@ -187,6 +173,4 @@ public class Juego {
     public static void main(String[] args) {
         new Juego().iniciar();
     }
-
-
 }
