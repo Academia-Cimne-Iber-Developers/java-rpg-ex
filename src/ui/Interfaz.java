@@ -1,9 +1,9 @@
 package ui;
 
-import java.util.Scanner;
-
 import managers.GestorMisiones;
 import models.*;
+
+import java.util.Scanner;
 
 public class Interfaz {
     private static final Scanner scanner = new Scanner(System.in);
@@ -40,10 +40,8 @@ public class Interfaz {
             }
         }
 
-        System.out.print("Presioná ENTER para continuar...");
-        scanner.nextLine();  // Pausa antes de volver al menú principal
+        pausarPantalla();
     }
-
 
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
@@ -81,8 +79,7 @@ public class Interfaz {
 
     public void mostrarMensaje(String mensaje) {
         System.out.println("\n" + mensaje);
-        System.out.print("Presioná ENTER para continuar...");
-        scanner.nextLine();
+        pausarPantalla();
     }
 
     public void mostrarInventario() {
@@ -90,8 +87,7 @@ public class Interfaz {
         String resultado = jugador.mostrarInventario();
         System.out.println(resultado);
         System.out.println("==================");
-        System.out.print("Presioná ENTER para continuar...");
-        scanner.nextLine();
+        pausarPantalla();
     }
 
     public void mostrarResultadoExploracion(String resultado, GestorMisiones gestorMisiones) {
@@ -111,11 +107,8 @@ public class Interfaz {
                 }
             }
         }
-        System.out.print("Presioná ENTER para continuar...");
-        scanner.nextLine();
+        pausarPantalla();
     }
-
-
 
     public void mostrarInfoMision(MisionExploracion mision) {
         if (mision.esCompletada()) {
@@ -137,6 +130,10 @@ public class Interfaz {
         } else {
             System.out.println("\nNo puedes viajar a " + destino);
         }
+        pausarPantalla();
+    }
+
+    private void pausarPantalla() {
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
     }
