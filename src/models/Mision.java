@@ -1,10 +1,7 @@
 package models;
 
-import ui.Juego;
-
 public interface Mision {
     boolean estaCompleta();
     String getDescripcion();
-    void actualizar(Juego juego);
+    void actualizar(String ubicacionActual); // Por ejemplo, se pasa la ubicación actual del jugador
 }
-
