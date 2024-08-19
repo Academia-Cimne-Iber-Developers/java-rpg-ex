@@ -18,7 +18,7 @@ public class Juego {
 
     public Juego() {
         mapa = new Mapa();
-        jugador = new Jugador("MatiasFernando", mapa.getUbicacion("Bosque Oscuro"));
+        jugador = new Jugador("Fernando y Matias", mapa.getUbicacion("Bosque Oscuro"));
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
@@ -101,7 +101,8 @@ public class Juego {
 
         String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
         interfaz.mostrarMensaje(resultado);
-    }*/
+    }
+    */
 
     private void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
