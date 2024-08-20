@@ -4,6 +4,7 @@ import managers.GestorInventario;
 import models.Enemigo;
 import models.Jugador;
 import models.Mapa;
+import models.ResultadoUsoItem;
 import models.Ubicacion;
 import ui.Interfaz;
 
@@ -95,11 +96,26 @@ public class Juego {
         }
     }
 
-    private void usarItem() {
+    /*private void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
         String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
         interfaz.mostrarMensaje(resultado);
+    }
+    */
+
+    private void usarItem() {
+        String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
+
+        // Obtenemos el resultado de usar el objeto
+        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        // Manejamos el resultado y mostramos el mensaje que corresponde
+        if (resultado.isExito()) {
+            interfaz.mostrarMensaje("Éxito: " + resultado.getMensaje());
+        } else {
+            interfaz.mostrarMensaje("Error: " + resultado.getMensaje());
+        }
     }
 
     private void luchar() {
