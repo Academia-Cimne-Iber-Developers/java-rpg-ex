@@ -12,7 +12,7 @@ public class Mapa {
     }
 
     private void inicializarMapa() {
-        agregarUbicacion("Pueblo Vacio", "Un pequeño pueblo donde comienza tu aventura.");
+        agregarUbicacion("Pueblo Inicio", "Un pequeño pueblo donde comienza tu aventura.");
         agregarUbicacion("Bosque Oscuro", "Un denso bosque lleno de criaturas misteriosas.");
         agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
         agregarUbicacion("Cueva Profunda", "Una cueva oscura que esconde secretos antiguos.");
