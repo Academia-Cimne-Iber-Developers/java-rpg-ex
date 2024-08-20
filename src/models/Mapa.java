@@ -12,9 +12,9 @@ public class Mapa {
     }
 
     private void inicializarMapa() {
-        agregarUbicacion("Pueblo Vacio", "Un pequeño pueblo donde comienza tu aventura.");
+        agregarUbicacion("Pueblo Inicio", "Un pequeño pueblo donde comienza tu aventura.");
         agregarUbicacion("Bosque Oscuro", "Un denso bosque lleno de criaturas misteriosas.");
-        agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
+        agregarUbicacion("Montana Nevada", "Una imponente montaña cubierta de nieve.");
         agregarUbicacion("Cueva Profunda", "Una cueva oscura que esconde secretos antiguos.");
 
         Item pocionCuracion = new Item("Pocion", 2, 10, new EfectoCuracion(20), true); // Consumible
@@ -27,7 +27,7 @@ public class Mapa {
         agregarItemAUbicacion("Bosque Oscuro", pociones);
 
         Item botasNieve = new Item("Botas de nieve", 1, 5, null, false); // No consumible
-        agregarItemAUbicacion("Montaña Nevada", botasNieve);
+        agregarItemAUbicacion("Montana Nevada", botasNieve);
 
         Item gemaMagica = new Item("Gema magica", 1, 5, new EfectoCuracion(50), true); // Consumible
         agregarItemAUbicacion("Cueva Profunda", gemaMagica);

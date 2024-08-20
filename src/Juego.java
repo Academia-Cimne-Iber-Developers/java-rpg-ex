@@ -14,6 +14,7 @@ public class Juego {
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
+    private ControladorAcciones controladorAcciones;
 
     public Juego() {
         mapa = new Mapa();
@@ -22,56 +23,27 @@ public class Juego {
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
+        controladorAcciones = new ControladorAcciones(this);
     }
 
     public void iniciar() {
         while (true) {
             interfaz.actualizarPantalla();
             String opcion = interfaz.obtenerEntrada();
-
-            switch (opcion) {
-                case "e":
-                    explorarUbicacion();
-                    break;
-                case "v":
-                    verMapa();
-                    break;
-                case "m":
-                    moverJugador();
-                    break;
-                case "i":
-                    interfaz.mostrarInventario();
-                    break;
-                case "r":
-                    recogerItem();
-                    break;
-                case "d":
-                    dejarItem();
-                    break;
-                case "u":
-                    usarItem();
-                case "l":
-                    luchar();
-                    break;
-                case "s":
-                    interfaz.mostrarMensaje("Gracias por jugar!");
-                    return;
-                default:
-                    interfaz.mostrarMensaje("Opción no válida.");
-            }
+            controladorAcciones.procesarAccion(opcion);
         }
     }
 
-    private void explorarUbicacion() {
+    public void explorarUbicacion() {
         String resultado = gestorExploracion.explorarUbicacion();
         interfaz.mostrarResultadoExploracion(resultado);
     }
 
-    private void verMapa() {
+    public void verMapa() {
         interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
     }
 
-    private void recogerItem() {
+    public void recogerItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
@@ -83,7 +55,7 @@ public class Juego {
         }
     }
 
-    private void dejarItem() {
+    public void dejarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
@@ -95,14 +67,14 @@ public class Juego {
         }
     }
 
-    private void usarItem() {
+    public void usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
         String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
         interfaz.mostrarMensaje(resultado);
     }
 
-    private void luchar() {
+    public void luchar() {
         Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
         if (enemigo != null) {
             gestorCombate.pelear(enemigo);
@@ -118,7 +90,7 @@ public class Juego {
         }
     }
 
-    private void moverJugador() {
+    public void moverJugador() {
         String destino = interfaz.pedirDestinoViaje();
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
@@ -130,6 +102,18 @@ public class Juego {
         }
     }
 
+    public void mostrarInventario() {
+        interfaz.mostrarInventario();
+    }
+
+    public void salir() {
+        interfaz.mostrarMensaje("Gracias por jugar!");
+        System.exit(0);
+    }
+
+    public void opcionInvalida() {
+        interfaz.mostrarMensaje("Opción no válida.");
+    }
     public static void main(String[] args) {
         new Juego().iniciar();
     }
