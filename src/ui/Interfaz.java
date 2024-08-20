@@ -91,4 +91,15 @@ public class Interfaz {
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
     }
+
+    public void mostrarOpcionesCombate(double porcentajeCritico) {
+        System.out.println("\n=== OPCIONES DE COMBATE ===");
+        System.out.println("1. Atacar");
+        System.out.println("2. Bloquear");
+        System.out.println("3. Cargar");
+        System.out.println("4. Curarse");
+        System.out.println("===========================");
+        System.out.println("Probabilidad de crítico: " + porcentajeCritico + "%");
+        System.out.print("Elegí una opción: ");
+    }
 }
