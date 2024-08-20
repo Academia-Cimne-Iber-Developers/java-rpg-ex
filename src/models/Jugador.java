@@ -4,6 +4,7 @@ public class Jugador extends Entidad {
   private InventarioJugador inventario;
   private Ubicacion ubicacionActual;
   private int capacidadMax = 100;
+  private boolean bloquear;
 
   public Jugador(String nombre, Ubicacion ubicacionInicial) {
     super(nombre, 100, 15);
@@ -15,6 +16,11 @@ public class Jugador extends Entidad {
   public void recibirDanio(int danio) {
       this.vida -= danio;
       if (this.vida < 0) this.vida = 0;
+
+      if (bloquear) {
+        this.vida += danio / 2;
+        bloquear = false;
+      }
   }
 
   @Override
@@ -26,7 +32,25 @@ public class Jugador extends Entidad {
 }
 
   public void curarse(int cantidadCuracion, String nombre) {
-    this.vida = Math.min(100, getVida() + cantidadCuracion);
+    
+    if (inventario.tieneObjeto("Pocion", 1)) {
+      System.out.println("Hay pociones en el inventario.");
+      System.out.println("Hay pociones en el inventario."+ inventario.listarObjetos());
+    } else {
+      System.out.println("No hay pociones en el inventario.");
+    }
+
+      // }
+    // this.vida = Math.min(100, getVida() + cantidadCuracion);
+  }
+
+  public void usarPocion(){
+    if (inventario.tieneObjeto("Pocion", 1)) {
+      System.out.println("Hay pociones en el inventario.");
+      System.out.println("Hay pociones en el inventario."+ inventario.listarObjetos());
+    } else {
+      System.out.println("No hay pociones en el inventario.");
+    }
   }
 
   public String mostrarInventario() {
@@ -55,5 +79,9 @@ public class Jugador extends Entidad {
 
   public void setCapacidadMax(int capacidadMax) {
     this.capacidadMax = capacidadMax;
+  }
+
+  public void setBloquear(boolean bool) {
+    this.bloquear = bool;
   }
 }

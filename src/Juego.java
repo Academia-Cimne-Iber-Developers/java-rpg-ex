@@ -17,7 +17,7 @@ public class Juego {
 
     public Juego() {
         mapa = new Mapa();
-        jugador = new Jugador("God", mapa.getUbicacion("Pueblo Inicio"));
+        jugador = new Jugador("God", mapa.getUbicacion("Bosque Oscuro"));
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
@@ -104,18 +104,29 @@ public class Juego {
 
     private void luchar() {
         Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
-        if (enemigo != null) {
-            gestorCombate.pelear(enemigo);
-            if (jugador.estaVivo()) {
+        if (enemigo == null) {
+            interfaz.mostrarMensaje("No hay enemigos en esta ubicación.");
+        }else {
+            // gestorCombate.elegirAccionJugador(jugador, enemigo);
+            while (jugador.estaVivo() && enemigo.estaVivo()){
+                gestorCombate.elegirAccionJugador(jugador, enemigo);
+                // interfaz.mostrarMensaje(jugador.atacar(enemigo));
+                if (enemigo.estaVivo()) {
+                    interfaz.mostrarMensaje("El enemigo se prepara para atacar");
+                    interfaz.mostrarMensaje(enemigo.atacar(jugador));
+                }
+                interfaz.mostrarMensaje("Vida jugador: " + jugador.getVida() + " | Vida enemigo: " + enemigo.getVida());
+            }
+            if (jugador.estaVivo()){
                 jugador.getUbicacionActual().eliminarEnemigo();
-                interfaz.mostrarMensaje("Has derrotado al enemigo!");
+                interfaz.mostrarMensaje("Derrotaste a: " + enemigo.getNombre());
             } else {
-                interfaz.mostrarMensaje("Has sido derrotado. Fin del juego.");
+
+                interfaz.mostrarMensaje("Moriste, fin del juego.");
                 System.exit(0);
             }
-        } else {
-            interfaz.mostrarMensaje("- No hay enemigos en esta ubicación.");
         }
+
     }
 
     private void moverJugador() {
