@@ -4,6 +4,7 @@ import managers.GestorInventario;
 import models.Enemigo;
 import models.Jugador;
 import models.Mapa;
+import models.ResultadoUsoItem;
 import models.Ubicacion;
 import ui.Interfaz;
 
@@ -76,9 +77,19 @@ public class Juego {
         return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
     }
 
-    public String usarItem(){
+    public String usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
-        return gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        // Obtenemos el resultado de usar el objeto
+        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        // Manejamos el resultado y mostramos el mensaje que corresponde
+        if (resultado.isExito()) {
+            interfaz.mostrarMensaje("Éxito: " + resultado.getMensaje());
+        } else {
+            interfaz.mostrarMensaje("Error: " + resultado.getMensaje());
+        }
+        return resultado.getMensaje();
     }
 
     public String moverJugador() {
