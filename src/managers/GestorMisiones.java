@@ -2,6 +2,8 @@ package managers;
 
 import models.Jugador;
 import models.Mision;
+import models.MisionCombate;
+import models.MisionExploracion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +23,18 @@ public class GestorMisiones {
         misionesActivas.add(mision);
     }
 
-    public void actualizarMisiones(String ubicacionActual) {
+    public void actualizarMisiones(String ubicacionActual, String enemigoDerrotado){
         List<Mision> misionesParaMover = new ArrayList<>();
-
         for (Mision mision : misionesActivas) {
-            mision.actualizar(ubicacionActual);  // Se pasa la ubicación actual
+            if (mision instanceof MisionCombate) {
+                ((MisionCombate) mision).actualizar(enemigoDerrotado);
+            } else if (mision instanceof MisionExploracion) {
+                ((MisionExploracion) mision).actualizar(ubicacionActual);
+            }
             if (mision.estaCompleta()) {
                 misionesParaMover.add(mision);
             }
         }
-
         misionesActivas.removeAll(misionesParaMover);
         misionesCompletadas.addAll(misionesParaMover);
     }
