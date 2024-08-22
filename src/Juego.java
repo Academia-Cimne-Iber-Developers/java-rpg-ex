@@ -112,7 +112,7 @@ public class Juego {
                 gestorCombate.elegirAccionJugador(jugador, enemigo);
                 // interfaz.mostrarMensaje(jugador.atacar(enemigo));
                 if (enemigo.estaVivo()) {
-                    interfaz.mostrarMensaje("El enemigo se prepara para atacar");
+                    interfaz.mostrarMensaje("El feroz enemigo se prepara para atacar");
                     interfaz.mostrarMensaje(enemigo.atacar(jugador));
                 }
                 interfaz.mostrarMensaje("Vida jugador: " + jugador.getVida() + " | Vida enemigo: " + enemigo.getVida());
