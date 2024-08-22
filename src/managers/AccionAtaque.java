@@ -19,9 +19,6 @@ public class AccionAtaque implements AccionCombate {
         }
         enemigo.recibirDanio(danio);
         gestorCombate.getInterfaz().mostrarMensaje("Has atacado a " + enemigo.getNombre() + " el enemigo causando " + danio + " de daño.");
-        // if (enemigo.estaVivo()) {
-        //     gestorCombate.getInterfaz().mostrarMensaje("El enemigo se prepara para atacar");
-        //     gestorCombate.getInterfaz().mostrarMensaje(enemigo.atacar(jugador));
-        //   }
+        // 
     }
 }

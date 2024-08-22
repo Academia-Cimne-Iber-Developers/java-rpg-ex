@@ -31,17 +31,8 @@ public class Jugador extends Entidad {
     return resultado;
 }
 
-  public void curarse(int cantidadCuracion, String nombre) {
-    
-    if (inventario.tieneObjeto("Pocion", 1)) {
-      System.out.println("Hay pociones en el inventario.");
-      System.out.println("Hay pociones en el inventario."+ inventario.listarObjetos());
-    } else {
-      System.out.println("No hay pociones en el inventario.");
-    }
-
-      // }
-    // this.vida = Math.min(100, getVida() + cantidadCuracion);
+  public void curarse(int cantidadCuracion) {
+    this.vida = Math.min(100, getVida() + cantidadCuracion);
   }
 
   public void usarPocion(){
