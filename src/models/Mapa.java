@@ -57,8 +57,8 @@ public class Mapa {
         mapa.append("Mapa del mundo:\n");
         for (String ubicacion : ubicaciones.keySet()) {
             mapa.append("- ")
-                .append(ubicacion)
-                .append("\n");
+                    .append(ubicacion)
+                    .append("\n");
         }
         return mapa.toString();
     }

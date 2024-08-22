@@ -7,21 +7,23 @@ import ui.Interfaz;
 
 public class Juego {
     private Mapa mapa;
-    private Interfaz interfaz;
     private Jugador jugador;
+    private Interfaz interfaz;
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
     private GestorMisiones gestorMisiones;
+    private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
 
     public Juego() {
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
+        gestorMisiones = new GestorMisiones(jugador);
+        gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
-        gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
-        gestorMisiones = new GestorMisiones(jugador);
+        controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
         inicializarMisiones();
     }
 
@@ -38,7 +40,11 @@ public class Juego {
         return jugador;
     }
 
-    private void moverJugador() {
+    public GestorMisiones getGestorMisiones() {
+        return gestorMisiones;
+    }
+
+    public String moverJugador() {
         String destino = interfaz.pedirDestinoViaje();
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
@@ -53,99 +59,29 @@ public class Juego {
         } else {
             interfaz.mostrarResultadoViaje(false, destino);
         }
+        return destino;
     }
 
     public void iniciar() {
         while (true) {
             interfaz.actualizarPantalla();
             String opcion = interfaz.obtenerEntrada();
-
-            switch (opcion) {
-                case "e":
-                    explorarUbicacion();
-                    break;
-                case "v":
-                    verMapa();
-                    break;
-                case "m":
-                    moverJugador();
-                    break;
-                case "i":
-                    interfaz.mostrarInventario();
-                    break;
-                case "r":
-                    recogerItem();
-                    break;
-                case "d":
-                    dejarItem();
-                    break;
-                case "u":
-                    usarItem();
-                    break;
-                case "l":
-                    luchar();
-                    break;
-                case "mis":
-                    interfaz.mostrarMisiones(gestorMisiones);
-                    break;
-                case "s":
-                    interfaz.mostrarMensaje("Gracias por jugar!");
-                    return;
-                default:
-                    interfaz.mostrarMensaje("Opción no válida.");
-            }
-
-            String ubicacionActual = jugador.getUbicacionActual().getNombre();
-            String enemigoDerrotado = ""; // Este valor debería venir del resultado de un combate
-            gestorMisiones.actualizarMisiones(ubicacionActual, enemigoDerrotado);
+            controladorAcciones.procesarAccion(opcion);
         }
     }
 
-    private void explorarUbicacion() {
-        String resultado = gestorExploracion.explorarUbicacion();
+    public Ubicacion explorarUbicacion() {
+        String resultado = String.valueOf(gestorExploracion.explorarUbicacion());
         interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
 
         // Muestra el progreso o finalización de todas las misiones activas después de explorar
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             interfaz.mostrarInfoMision(mision);
         }
+        return null;
     }
 
-    private void verMapa() {
-        interfaz.mostrarMensaje(gestorExploracion.verMapa(mapa));
-    }
-
-    private void recogerItem() {
-        String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
-        int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
-
-        if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
-            interfaz.mostrarMensaje("Item recogido con éxito.");
-        } else {
-            interfaz.mostrarMensaje("No se pudo recoger el item.");
-        }
-    }
-
-    private void dejarItem() {
-        String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
-        int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
-
-        if (gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad)) {
-            interfaz.mostrarMensaje("Item dejado con éxito.");
-        } else {
-            interfaz.mostrarMensaje("No se pudo dejar el item.");
-        }
-    }
-
-    private void usarItem() {
-        String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
-
-        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
-        interfaz.mostrarMensaje(resultado);
-    }
-
-    private void luchar() {
-        Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
+    public void luchar(Enemigo enemigo) {
         if (enemigo != null) {
             gestorCombate.pelear(enemigo);
             if (jugador.estaVivo()) {
@@ -165,7 +101,44 @@ public class Juego {
         }
     }
 
-    private void agregarNuevaMision(Mision nuevaMision) {
+    public GestorCombate getGestorCombate() {
+        return gestorCombate;
+    }
+
+    public String verMapa(){
+        return gestorExploracion.verMapa(mapa);
+    }
+
+    public boolean recogerItem() {
+        String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
+        int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
+
+        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad);
+    }
+
+    public boolean dejarItem() {
+        String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
+        int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
+
+        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
+    }
+
+    public String usarItem() {
+        String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
+
+        // Obtenemos el resultado de usar el objeto
+        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        // Manejamos el resultado y mostramos el mensaje que corresponde
+        if (resultado.isExito()) {
+            interfaz.mostrarMensaje("Éxito: " + resultado.getMensaje());
+        } else {
+            interfaz.mostrarMensaje("Error: " + resultado.getMensaje());
+        }
+        return resultado.getMensaje();
+    }
+
+    public void agregarNuevaMision(Mision nuevaMision) {
         gestorMisiones.agregarMision(nuevaMision);
         interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
     }
