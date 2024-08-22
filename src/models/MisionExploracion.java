@@ -43,8 +43,8 @@ public class MisionExploracion extends MisionBase {
     }
     @Override
     public void actualizar(String tipo, String data) {
-       if(tipo == "m_exploracion"){
-        if(data == this.ubicacionObjetivo){
+       if("m_exploracion".equals(tipo)){
+        if(data.equals(this.ubicacionObjetivo)){
             this.vecesVisitada++;
             if(this.vecesVisitada >= this.vecesRequeridas){
                 this.completada = true;

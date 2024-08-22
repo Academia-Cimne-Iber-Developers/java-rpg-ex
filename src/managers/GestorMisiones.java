@@ -3,15 +3,18 @@ package managers;
 import java.util.ArrayList;
 import java.util.List;
 import models.IMision;
+import models.Jugador;
 
 public class GestorMisiones {
     private List<IMision> misionesActivas;
     private List<IMision> misionesCompletadas;
+    private Jugador jugador;
     // Métodos para agregar, actualizar y obtener misiones
 
-    public GestorMisiones() {
+    public GestorMisiones(Jugador jugador) {
         this.misionesActivas = new ArrayList<>();
         this.misionesCompletadas = new ArrayList<>();
+        this.jugador = jugador;
     }
 
     //Metodo para agregar una mision
@@ -56,15 +59,25 @@ public class GestorMisiones {
           return sb.toString();
       }
       for (IMision misionCompletada : this.misionesCompletadas) {
-          sb.append(misionCompletada.getDescripcion()).append("\n");
-        //   sb.append(misionCompletada.getEstadoMision()).append("\n");
+          sb.append(misionCompletada.getDescripcion()).append("\n"); 
           sb.append("\n");
       }
       
       return sb.toString();
     }
 
+    public String mostrarMisiones(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.listarMisionesActivas()).append("\n");
+        sb.append(this.listarMisionesCompletadas()).append("\n");
+        return sb.toString();
+      }
+
+      public void agregarNuevaMision(IMision nuevaMision){
+        this.agregarMision(nuevaMision);
+      }
 
 
 
-}//fin de clase
+
+}

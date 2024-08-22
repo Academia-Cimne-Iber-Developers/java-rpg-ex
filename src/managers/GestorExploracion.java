@@ -13,8 +13,7 @@ public class GestorExploracion {
   }
 
   public String viajar(Ubicacion nuevaUbicacion) {
-    jugador.setUbicacionActual(nuevaUbicacion);
-    jugador.actualizarMisiones("m_exploracion", nuevaUbicacion.getNombre());
+    jugador.setUbicacionActual(nuevaUbicacion);    
     explorarUbicacion();
     String resultado = "Has viajado a " + jugador.getUbicacionActual().getNombre();
     return resultado;

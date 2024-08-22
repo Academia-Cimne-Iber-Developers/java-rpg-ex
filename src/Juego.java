@@ -1,11 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
+import managers.GestorMisiones;
 import models.Enemigo;
 import models.IMision;
 import models.Jugador;
@@ -22,6 +20,8 @@ public class Juego {
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
+    private List<IMision> misionesDisponibles = new ArrayList<>();
+    private GestorMisiones gestorMisiones;
 
     public Juego() {
         mapa = new Mapa();
@@ -30,6 +30,8 @@ public class Juego {
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
+        CrearMisiones();
+        gestorMisiones = new GestorMisiones(jugador);
     }
 
     public void iniciar() {
@@ -62,14 +64,19 @@ public class Juego {
                     luchar();
                     break;                
                 case "mi":
-                    interfaz.mostrarMisiones();
+                    String data = this.gestorMisiones.mostrarMisiones();
+                    interfaz.mostrarMisiones(data);
                     break;
-                case "ex":
-                    crearNuevaMisionExploracion();
+                case "1":
+                    asignarMision(misionesDisponibles.get(0));   
                     break;      
-                case "at":
-                    crearNuevaMisionAtesorar();
-                    break;              
+                case "2":
+                    asignarMision(misionesDisponibles.get(1));
+
+                    break;    
+                case "3":
+                    asignarMision(misionesDisponibles.get(2));                    
+                    break;        
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
                     return;
@@ -95,7 +102,7 @@ public class Juego {
         if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item recogido con éxito.");
             //actualicemos las misiones
-            jugador.actualizarMisiones("m_atesorar", nombreItem);
+            gestorMisiones.actualizarMisiones("m_atesorar", nombreItem);            
         } else {
             interfaz.mostrarMensaje("No se pudo recoger el item.");
         }
@@ -139,53 +146,43 @@ public class Juego {
         String destino = interfaz.pedirDestinoViaje();
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
+            this.gestorMisiones.actualizarMisiones("m_exploracion", destino);            
             String resultado = gestorExploracion.viajar(nuevaUbicacion);
             interfaz.mostrarMensaje(resultado);
             interfaz.mostrarResultadoViaje(true, destino);
+            
         } else {
             interfaz.mostrarResultadoViaje(false, destino);
         }
     }
 
-    private void crearNuevaMisionExploracion() {
-        //vamos a obterner los destinos posibles
-        Map<String, Ubicacion> mapa = new Mapa().getUbicaciones();
-        //voy a crear una lista de las keys de las ubicaciones
-        List<String> destinos = new ArrayList<>(mapa.keySet());
-        //vamos a elegir un destino al azar para crear la nueva mision
-        Random random = new Random();
-        String destino = destinos.get(random.nextInt(destinos.size()));
-
-        int visitasRequeridas = random.nextInt(3) + 1;
-        String descripcion = "Explorar " + destino + " por " + visitasRequeridas + " vez(es).";
-        //vamos a crear una nueva mision        
-        IMision nuevaMision = new MisionExploracion(descripcion, destino, visitasRequeridas); 
-        //agregamos la nueva mision
-        this.jugador.agregarNuevaMision(nuevaMision);
-        //mostramos el resultado
-        interfaz.mostrarMisiones();
-        
+    private void asignarMision(IMision mision){
+        this.gestorMisiones.agregarNuevaMision(mision);
+        interfaz.mostrarMisiones(this.gestorMisiones.mostrarMisiones());
     }
 
-    private void crearNuevaMisionAtesorar() {
-        //vamos a obtener los posibles items desde el mapa creado
-        Set<String> conjuntoItems = this.mapa.getConjuntoItems();
-        
-        //vamos a elegir un item al azar para crear la nueva mision
-        List<String> listaItems = new ArrayList<>(conjuntoItems);
-        Random random = new Random();
-        String tesoro = listaItems.get(random.nextInt(listaItems.size()));
 
-        int numeroRequerido = random.nextInt(3) + 1;
-        String descripcion = "Obtener " + tesoro + " atesorando " + numeroRequerido + " cantidad de veces.";
-        //vamos a crear una nueva mision        
-        IMision nuevaMisionAtesorar = new MisionAtesorar(descripcion, tesoro, numeroRequerido); 
-        //agregamos la nueva mision
-        this.jugador.agregarNuevaMision(nuevaMisionAtesorar);
-        //mostramos el resultado
-        interfaz.mostrarMisiones();
-        
+    private void CrearMisiones(){
+
+        this.misionesDisponibles.add(new MisionExploracion(
+            "Explorar Pueblo Inicio por 3 veces.",
+            "Pueblo Inicio", 
+            3));
+
+        this.misionesDisponibles.add(new MisionExploracion(
+            "Explorar Cueva Profunda por 2 veces.",
+            "Cueva Profunda", 
+            2
+        ));
+
+        this.misionesDisponibles.add(new MisionAtesorar(
+            "Obtener Pocion atesorando 2 cantidad de veces.",
+            "Pocion", 
+            2
+        ));
     }
+
+
 
     public static void main(String[] args) {
         new Juego().iniciar();

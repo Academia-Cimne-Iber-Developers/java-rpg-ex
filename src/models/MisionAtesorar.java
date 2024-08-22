@@ -21,8 +21,8 @@ public class MisionAtesorar extends MisionBase {
         System.out.println("Actualizando......");
         System.out.println(tipo);
         System.out.println(data);
-        if(tipo == "m_atesorar"){
-            if(data == this.TesoroRequired){
+        if(tipo.equals("m_atesorar")){
+            if(data.equals(this.TesoroRequired)){
                 this.numObtenido++;
                 if(this.numObtenido >= this.numRequired){
                     this.completada = true;
