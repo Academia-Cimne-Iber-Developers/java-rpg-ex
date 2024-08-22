@@ -23,7 +23,7 @@ public class Juego {
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
-        controladorAcciones = new ControladorAcciones(this);
+        controladorAcciones = new ControladorAcciones(this); 
     }
 
     public void iniciar() {

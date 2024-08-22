@@ -5,7 +5,7 @@ public class ControladorAcciones {
     public ControladorAcciones(Juego juego) {
         this.juego = juego;
     }
-
+ 
     public void procesarAccion(String opcion) {
         switch (opcion) {
             case "e":

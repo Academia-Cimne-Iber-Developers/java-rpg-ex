@@ -18,7 +18,7 @@ public class Mapa {
         agregarUbicacion("Cueva Profunda", "Una cueva oscura que esconde secretos antiguos.");
 
         Item pocionCuracion = new Item("Pocion", 2, 10, new EfectoCuracion(20), true); // Consumible
-        agregarItemAUbicacion("Pueblo Inicio", pocionCuracion);
+        agregarItemAUbicacion("Pueblo Inicio", pocionCuracion); 
 
         Item espada = new Item("Espada de madera", 1, 15, null, false); // No consumible
         agregarItemAUbicacion("Bosque Oscuro", espada);
