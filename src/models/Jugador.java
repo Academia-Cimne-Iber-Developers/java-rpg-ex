@@ -31,7 +31,7 @@ public class Jugador extends Entidad {
     return resultado;
 }
 
-  public void curarse(int cantidadCuracion) {
+  public void curarse(int cantidadCuracion, String nombre) {
     this.vida = Math.min(100, getVida() + cantidadCuracion);
   }
 

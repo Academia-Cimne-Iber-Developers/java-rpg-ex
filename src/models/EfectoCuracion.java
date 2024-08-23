@@ -10,7 +10,7 @@ public class EfectoCuracion implements EfectoItem {
 
   @Override
   public void aplicarEfecto(Jugador jugador, String nombre) {
-    // jugador.curarse(cantidadCuracion, nombre);
+    jugador.curarse(cantidadCuracion, nombre);
   }
   
 }
