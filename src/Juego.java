@@ -17,7 +17,7 @@ public class Juego {
 
     public Juego() {
         mapa = new Mapa();
-        jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
+        jugador = new Jugador("Link", mapa.getUbicacion("Bosque Oscuro"));
         gestorMisiones = new GestorMisiones(jugador);
         gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
         interfaz = new Interfaz(mapa, jugador);
@@ -81,8 +81,13 @@ public class Juego {
         return null;
     }
 
-    private void luchar() {
-        Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
+    public void luchar(Enemigo enemy){
+        verLuchar(enemy);
+    }
+
+    private void verLuchar(Enemigo enemy) {
+        // Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
+        Enemigo enemigo = enemy;
         if (enemigo == null) {
             interfaz.mostrarMensaje("No hay enemigos en esta ubicación.");
         }else {
