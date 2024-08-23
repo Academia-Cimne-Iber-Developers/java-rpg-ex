@@ -1,14 +1,14 @@
 package models;
 
 public class Jugador extends Entidad {
-  private InventarioJugador inventario;
+  private InventarioJugador inventario;  
   private Ubicacion ubicacionActual;
-  private int capacidadMax = 100;
+  private int capacidadMax = 100;  
 
   public Jugador(String nombre, Ubicacion ubicacionInicial) {
     super(nombre, 100, 15);
     this.inventario = new InventarioJugador(capacidadMax);
-    this.ubicacionActual = ubicacionInicial;
+    this.ubicacionActual = ubicacionInicial;    
   }
 
   @Override
@@ -56,4 +56,8 @@ public class Jugador extends Entidad {
   public void setCapacidadMax(int capacidadMax) {
     this.capacidadMax = capacidadMax;
   }
+
+ 
+
+
 }

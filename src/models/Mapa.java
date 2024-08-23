@@ -6,6 +6,7 @@ import java.util.Map;
 public class Mapa {
     private Map<String, Ubicacion> ubicaciones;
 
+
     public Mapa() {
         ubicaciones = new HashMap<>();
         inicializarMapa();
@@ -44,7 +45,7 @@ public class Mapa {
     private void agregarItemAUbicacion(String nombreUbicacion, Item item) {
         Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
         if (ubicacion != null) {
-            ubicacion.getInventario().agregarObjeto(item);
+            ubicacion.getInventario().agregarObjeto(item);    
         }
     }
 
@@ -62,4 +63,5 @@ public class Mapa {
         }
         return mapa.toString();
     }
+    
 }

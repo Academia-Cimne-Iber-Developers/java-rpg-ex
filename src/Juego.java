@@ -1,9 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
+import managers.GestorMisiones;
 import models.Enemigo;
+import models.IMision;
 import models.Jugador;
 import models.Mapa;
+import models.MisionAtesorar;
+import models.MisionExploracion;
 import models.Ubicacion;
 import ui.Interfaz;
 
@@ -14,6 +20,8 @@ public class Juego {
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
+    private List<IMision> misionesDisponibles = new ArrayList<>();
+    private GestorMisiones gestorMisiones;
 
     public Juego() {
         mapa = new Mapa();
@@ -22,6 +30,8 @@ public class Juego {
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorExploracion = new GestorExploracion(jugador);
         gestorInventario = new GestorInventario();
+        CrearMisiones();
+        gestorMisiones = new GestorMisiones(jugador);
     }
 
     public void iniciar() {
@@ -52,7 +62,21 @@ public class Juego {
                     usarItem();
                 case "l":
                     luchar();
+                    break;                
+                case "mi":
+                    String data = this.gestorMisiones.mostrarMisiones();
+                    interfaz.mostrarMisiones(data);
                     break;
+                case "1":
+                    asignarMision(misionesDisponibles.get(0));   
+                    break;      
+                case "2":
+                    asignarMision(misionesDisponibles.get(1));
+
+                    break;    
+                case "3":
+                    asignarMision(misionesDisponibles.get(2));                    
+                    break;        
                 case "s":
                     interfaz.mostrarMensaje("Gracias por jugar!");
                     return;
@@ -77,6 +101,8 @@ public class Juego {
 
         if (gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad)) {
             interfaz.mostrarMensaje("Item recogido con éxito.");
+            //actualicemos las misiones
+            gestorMisiones.actualizarMisiones("m_atesorar", nombreItem);            
         } else {
             interfaz.mostrarMensaje("No se pudo recoger el item.");
         }
@@ -120,13 +146,43 @@ public class Juego {
         String destino = interfaz.pedirDestinoViaje();
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
+            this.gestorMisiones.actualizarMisiones("m_exploracion", destino);            
             String resultado = gestorExploracion.viajar(nuevaUbicacion);
             interfaz.mostrarMensaje(resultado);
             interfaz.mostrarResultadoViaje(true, destino);
+            
         } else {
             interfaz.mostrarResultadoViaje(false, destino);
         }
     }
+
+    private void asignarMision(IMision mision){
+        this.gestorMisiones.agregarNuevaMision(mision);
+        interfaz.mostrarMisiones(this.gestorMisiones.mostrarMisiones());
+    }
+
+
+    private void CrearMisiones(){
+
+        this.misionesDisponibles.add(new MisionExploracion(
+            "Explorar Pueblo Inicio por 3 veces.",
+            "Pueblo Inicio", 
+            3));
+
+        this.misionesDisponibles.add(new MisionExploracion(
+            "Explorar Cueva Profunda por 2 veces.",
+            "Cueva Profunda", 
+            2
+        ));
+
+        this.misionesDisponibles.add(new MisionAtesorar(
+            "Obtener Pocion atesorando 2 cantidad de veces.",
+            "Pocion", 
+            2
+        ));
+    }
+
+
 
     public static void main(String[] args) {
         new Juego().iniciar();
