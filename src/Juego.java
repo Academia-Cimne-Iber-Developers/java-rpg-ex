@@ -144,6 +144,33 @@ public class Juego {
     public String usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
+        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+        interfaz.mostrarMensaje(resultado);
+    }
+
+    private void luchar() {
+        Enemigo enemigo = jugador.getUbicacionActual().getEnemigoActual();
+        if (enemigo == null) {
+            interfaz.mostrarMensaje("No hay enemigos en esta ubicación.");
+        }else {
+            // gestorCombate.elegirAccionJugador(jugador, enemigo);
+            while (jugador.estaVivo() && enemigo.estaVivo()){
+                gestorCombate.elegirAccionJugador(jugador, enemigo);
+                // interfaz.mostrarMensaje(jugador.atacar(enemigo));
+                if (enemigo.estaVivo()) {
+                    interfaz.mostrarMensaje("El feroz enemigo se prepara para atacar");
+                    interfaz.mostrarMensaje(enemigo.atacar(jugador));
+                }
+                interfaz.mostrarMensaje("Vida jugador: " + jugador.getVida() + " | Vida enemigo: " + enemigo.getVida());
+            }
+            if (jugador.estaVivo()){
+                jugador.getUbicacionActual().eliminarEnemigo();
+                interfaz.mostrarMensaje("Derrotaste a: " + enemigo.getNombre());
+            } else {
+
+                interfaz.mostrarMensaje("Moriste, fin del juego.");
+                System.exit(0);
+            }
         // Obtenemos el resultado de usar el objeto
         ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
 

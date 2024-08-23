@@ -56,6 +56,49 @@ public void aumentarPorcentajeCritico(double incremento) {
 public void resetearPorcentajeCritico() {
   porcentajeCritico = 0;
 }
+    this.porcentajeCritico = 0;
+  }
+  public Interfaz getInterfaz() {
+    return interfaz;
+  }
+
+  public void elegirAccionJugador(Jugador jugador, Enemigo enemigo) {
+    interfaz.mostrarOpcionesCombate(porcentajeCritico);
+    int eleccion = Integer.parseInt(interfaz.obtenerEntrada());
+    AccionCombate accion = null;
+    switch (eleccion) {
+        case 1:
+            accion = new AccionAtaque();
+            break;
+        case 2:
+            accion = new AccionBloqueo();
+            break;
+        case 3:
+            accion = new AccionCarga();
+            break;
+        case 4:
+            accion = new AccionCuracion();
+            break;
+        default:
+            interfaz.mostrarMensaje("Opción no válida.");
+            return;
+    }
+    if (accion != null) {
+        accion.ejecutar(jugador, enemigo, this);
+    }
+}
+
+public double getPorcentajeCritico() {
+  return porcentajeCritico;
+}
+
+public void aumentarPorcentajeCritico(double incremento) {
+  porcentajeCritico = Math.min(porcentajeCritico + incremento, 80);
+}
+
+public void resetearPorcentajeCritico() {
+  porcentajeCritico = 0;
+}
 
   public void pelear(Enemigo enemigo){
 
