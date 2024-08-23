@@ -1,3 +1,4 @@
+
 # 🏰 RPG-EX en Java
 
 ## 📜 Intro
@@ -13,6 +14,7 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 - 🎒 Gestionar el inventario
 - 🏃‍♂️ Moverse entre diferentes lugares
 - 🧪 Recoger y utilizar objetos
+- 📜 Completar misiones mientras exploras
 
 ---
 
@@ -25,6 +27,7 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 - `GestorCombate`: Gestiona las peleas.
 - `GestorExploracion`: Guía de la aventura.
 - `GestorInventario`: Organiza los objetos.
+- `GestorMisiones`: Gestiona las misiones activas y completadas del jugador.
 
 ### 🧱 Modelos
 - `Jugador`: El personaje en el juego.
@@ -32,6 +35,7 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 - `Ubicacion`: Los lugares de la aventura.
 - `Mapa`: El mundo a explorar.
 - `Item`: Objetos que te ayudarán en el juego.
+- `MisionExploracion`: Un tipo de misión que requiere que el jugador explore ubicaciones específicas.
 
 ### 🖥️ Interfaz de Usuario
 - `Interfaz`: Herramienta que nos muestra el juego.
@@ -50,6 +54,7 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
    - `Jugador` y `Enemigo` heredan de `Entidad`, manteniendo consistencia en el combate.
 
 ---
+
 
 ## 🚀 Cómo Jugar
 

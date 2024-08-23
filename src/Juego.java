@@ -1,11 +1,8 @@
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
-import models.Enemigo;
-import models.Jugador;
-import models.Mapa;
-import models.ResultadoUsoItem;
-import models.Ubicacion;
+import managers.GestorMisiones;
+import models.*;
 import ui.Interfaz;
 
 public class Juego {
@@ -15,16 +12,54 @@ public class Juego {
     private GestorCombate gestorCombate;
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
-    private ControladorAcciones controladorAcciones;
+    private GestorMisiones gestorMisiones;
+    private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
 
     public Juego() {
-        this.mapa = new Mapa();
-        this.jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
-        this.interfaz = new Interfaz(mapa, jugador);
-        this.gestorCombate = new GestorCombate(jugador, interfaz);
-        this.gestorExploracion = new GestorExploracion(jugador);
-        this.gestorInventario = new GestorInventario();
-        this.controladorAcciones = new ControladorAcciones(this, interfaz);
+        mapa = new Mapa();
+        jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
+        gestorMisiones = new GestorMisiones(jugador);
+        gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
+        interfaz = new Interfaz(mapa, jugador);
+        gestorCombate = new GestorCombate(jugador, interfaz);
+        gestorInventario = new GestorInventario();
+        controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
+        inicializarMisiones();
+    }
+
+    private void inicializarMisiones() {
+        gestorMisiones.agregarMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
+        gestorMisiones.agregarMision(new MisionCombate("Derrotar un Lobo en Bosque Oscuro", "lobo", 1));
+    }
+
+    public Mapa getMapa() {
+        return mapa;
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public GestorMisiones getGestorMisiones() {
+        return gestorMisiones;
+    }
+
+    public String moverJugador() {
+        String destino = interfaz.pedirDestinoViaje();
+        Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
+        if (nuevaUbicacion != null) {
+            String resultado = gestorExploracion.viajar(nuevaUbicacion);
+            interfaz.mostrarMensaje(resultado);
+            interfaz.mostrarResultadoViaje(true, destino);
+
+            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva Profunda"
+            if (destino.equals("Cueva Profunda")) {
+                agregarNuevaMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
+            }
+        } else {
+            interfaz.mostrarResultadoViaje(false, destino);
+        }
+        return destino;
     }
 
     public void iniciar() {
@@ -36,22 +71,33 @@ public class Juego {
     }
 
     public Ubicacion explorarUbicacion() {
-        Ubicacion nuevaUbicacion = gestorExploracion.explorarUbicacion();  
-        interfaz.mostrarResultadoExploracion("Has explorado: " + nuevaUbicacion.getNombre());
-        jugador.setUbicacionActual(nuevaUbicacion);
-        return nuevaUbicacion;
+        String resultado = String.valueOf(gestorExploracion.explorarUbicacion());
+        interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
+
+        // Muestra el progreso o finalización de todas las misiones activas después de explorar
+        for (Mision mision : gestorMisiones.getMisionesActivas()) {
+            interfaz.mostrarInfoMision(mision);
+        }
+        return null;
     }
 
-    public boolean luchar(Enemigo enemigo) {
-        gestorCombate.pelear(enemigo);
-        if (jugador.estaVivo()) {
-            jugador.getUbicacionActual().eliminarEnemigo();
-            interfaz.mostrarMensaje("¡Has derrotado al enemigo!");
-            return true;
+    public void luchar(Enemigo enemigo) {
+        if (enemigo != null) {
+            gestorCombate.pelear(enemigo);
+            if (jugador.estaVivo()) {
+                jugador.getUbicacionActual().eliminarEnemigo();
+                String enemigoDerrotado = enemigo.getNombre();
+
+                // Actualizar la misión con el nombre del enemigo derrotado inmediatamente después de la pelea
+                gestorMisiones.actualizarMisiones(jugador.getUbicacionActual().getNombre(), enemigoDerrotado);
+
+                interfaz.mostrarResultadoCombate("Has derrotado a " + enemigoDerrotado, gestorMisiones);
+            } else {
+                interfaz.mostrarMensaje("Has sido derrotado. Fin del juego.");
+                System.exit(0);
+            }
         } else {
-            interfaz.mostrarMensaje("Has sido derrotado. Fin del juego.");
-            System.exit(0);
-            return false;
+            interfaz.mostrarMensaje("- No hay enemigos en esta ubicación.");
         }
     }
 
@@ -92,14 +138,9 @@ public class Juego {
         return resultado.getMensaje();
     }
 
-    public String moverJugador() {
-        String destino = interfaz.pedirDestinoViaje();
-        Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
-        if (nuevaUbicacion != null) {
-            return gestorExploracion.viajar(nuevaUbicacion);
-        } else {
-            return "No se encontró el destino: " + destino;
-        }
+    public void agregarNuevaMision(Mision nuevaMision) {
+        gestorMisiones.agregarMision(nuevaMision);
+        interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
     }
 
     public static void main(String[] args) {
