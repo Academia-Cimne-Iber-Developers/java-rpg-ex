@@ -144,8 +144,16 @@ public class Juego {
     public String usarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a usar: ");
 
-        String resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
-        interfaz.mostrarMensaje(resultado);
+        // Obtenemos el resultado de usar el objeto
+        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
+
+        // Manejamos el resultado y mostramos el mensaje que corresponde
+        if (resultado.isExito()) {
+            interfaz.mostrarMensaje("Éxito: " + resultado.getMensaje());
+        } else {
+            interfaz.mostrarMensaje("Error: " + resultado.getMensaje());
+        }
+        return resultado.getMensaje();
     }
 
     private void luchar() {
@@ -171,16 +179,7 @@ public class Juego {
                 interfaz.mostrarMensaje("Moriste, fin del juego.");
                 System.exit(0);
             }
-        // Obtenemos el resultado de usar el objeto
-        ResultadoUsoItem resultado = gestorInventario.usarObjeto(jugador, jugador.getInventario(), nombreItem);
-
-        // Manejamos el resultado y mostramos el mensaje que corresponde
-        if (resultado.isExito()) {
-            interfaz.mostrarMensaje("Éxito: " + resultado.getMensaje());
-        } else {
-            interfaz.mostrarMensaje("Error: " + resultado.getMensaje());
         }
-        return resultado.getMensaje();
     }
 
     public void agregarNuevaMision(Mision nuevaMision) {
