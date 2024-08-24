@@ -3,11 +3,11 @@ import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
 import managers.GestorMisiones;
-import managers.ConfiguracionJuego;
 import models.*;
 import ui.Interfaz;
 
 public class Juego {
+    private ConfiguracionJuego configuracionJuego;
     private Mapa mapa;
     private Jugador jugador;
     private Interfaz interfaz;
@@ -16,18 +16,17 @@ public class Juego {
     private GestorInventario gestorInventario;
     private GestorMisiones gestorMisiones;
     private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
-    private ConfiguracionJuego configuracionJuego;
 
     public Juego() {
+        configuracionJuego = ConfiguracionJuego.getInstancia();
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
         gestorMisiones = new GestorMisiones(jugador);
         gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
         interfaz = new Interfaz(mapa, jugador);
-        gestorCombate = new GestorCombate(jugador, interfaz);
+        gestorCombate = new GestorCombate(configuracionJuego ,jugador, interfaz);
         gestorInventario = new GestorInventario();
         controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
-        configuracionJuego = ConfiguracionJuego.getInstancia();
         inicializarMisiones();
     }
 
