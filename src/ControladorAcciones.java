@@ -3,6 +3,7 @@
 import managers.GestorMisiones;
 import models.Ubicacion;
 import models.Enemigo;
+import models.Dificultad;
 import managers.GestorExploracion;
 import ui.Interfaz;
 
@@ -12,14 +13,13 @@ public class ControladorAcciones {
     private GestorExploracion gestorExploracion;
     private GestorMisiones gestorMisiones;
 
-
     public ControladorAcciones(Juego juego, Interfaz interfaz) {
         this.juego = juego;
         this.interfaz = interfaz;
     }
 
     public void procesarAccion(String opcion) {
-        //Se intento seguir la plantilla propuesta en el issue
+        // Se intento seguir la plantilla propuesta en el issue
         switch (opcion) {
             case "e":
                 juego.explorarUbicacion();
@@ -66,6 +66,11 @@ public class ControladorAcciones {
             case "mis":
                 interfaz.mostrarMisiones(juego.getGestorMisiones());
                 break;
+            case "dificultad": {
+                Dificultad dificultadSeleccionada = interfaz.seleccionarDificultad();
+                juego.cambiarDificultad(dificultadSeleccionada);
+                break;
+            }
             default: {
                 String mensajeError = "Opción no válida";
                 interfaz.mostrarMensaje(mensajeError);

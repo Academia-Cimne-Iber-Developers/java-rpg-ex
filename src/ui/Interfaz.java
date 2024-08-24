@@ -3,7 +3,6 @@ package ui;
 import managers.GestorMisiones;
 import models.*;
 
-
 import java.util.Scanner;
 
 public class Interfaz {
@@ -44,7 +43,6 @@ public class Interfaz {
         pausarPantalla();
     }
 
-
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
@@ -52,7 +50,8 @@ public class Interfaz {
 
     private void mostrarInfoJugador() {
         System.out.println("=== ESTADO DEL JUGADOR ===");
-        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
+        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", jugador.getNombre(), jugador.getVida(),
+                jugador.getAtaque());
         System.out.println("============================");
     }
 
@@ -68,7 +67,8 @@ public class Interfaz {
         System.out.println("\n¿Qué querés hacer?");
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[L]uchar     [Mis]iones");  // Nueva opción para ver misiones
+        System.out.println("[L]uchar     [Mis]iones"); // Nueva opción para ver misiones
+        System.out.println("[D]ificultad");
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");
@@ -103,7 +103,9 @@ public class Interfaz {
                 if (misionExploracion.esCompletada()) {
                     System.out.println("¡Has completado la misión: " + misionExploracion.getDescripcion() + "!");
                 } else {
-                    System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " (" + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
+                    System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " ("
+                            + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas()
+                            + ")");
                 }
             }
         }
@@ -116,18 +118,19 @@ public class Interfaz {
             if (misionExploracion.esCompletada()) {
                 System.out.println("¡Has completado la misión: " + misionExploracion.getDescripcion() + "!");
             } else {
-                System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " (" + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
+                System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " ("
+                        + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
             }
         } else if (mision instanceof MisionCombate) {
             MisionCombate misionCombate = (MisionCombate) mision;
             if (misionCombate.esCompletada()) {
                 System.out.println("¡Has completado la misión: " + misionCombate.getDescripcion() + "!");
             } else {
-                System.out.println("Progreso en misión: " + misionCombate.getDescripcion() + " (" + misionCombate.getCantidadDerrotada() + "/" + misionCombate.getCantidadRequerida() + ")");
+                System.out.println("Progreso en misión: " + misionCombate.getDescripcion() + " ("
+                        + misionCombate.getCantidadDerrotada() + "/" + misionCombate.getCantidadRequerida() + ")");
             }
         }
     }
-
 
     public String pedirDestinoViaje() {
         System.out.print("\n¿A dónde quieres ir?: ");
@@ -155,6 +158,27 @@ public class Interfaz {
             }
         }
         pausarPantalla();
+    }
+
+    public Dificultad seleccionarDificultad() {
+        System.out.println("\n === Elige la dificultad Aventurero ===");
+        System.out.println("[F]acil");
+        System.out.println("[N]ormal");
+        System.out.println("[D]ificil");
+
+        String dificultad = scanner.nextLine().toLowerCase();
+
+        switch (dificultad) {
+            case "f":
+                return Dificultad.FACIL;
+            case "n":
+                return Dificultad.NORMAL;
+            case "d":
+                return Dificultad.DIFICIL;
+            default:
+                System.out.println("Selecciona una dificultad válida por favor.");
+                return seleccionarDificultad();
+        }
     }
 
     private void pausarPantalla() {
