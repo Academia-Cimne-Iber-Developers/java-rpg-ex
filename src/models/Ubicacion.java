@@ -75,8 +75,10 @@ public class Ubicacion {
     public String toString() {
         return nombre;
     }
-
-    public InventarioUbicacion getInventario() {
+    
+    public InventarioUbicacion getInventrio() {
         return inventario;
     }
+    
+
 }
