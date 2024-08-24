@@ -7,10 +7,12 @@ import ui.Interfaz;
 import models.Dificultad;
 
 public class GestorCombate {
+  private ConfiguracionJuego configuracionJuego;
   private Jugador jugador;
   private Interfaz interfaz;
-
-  public GestorCombate(Jugador jugador,Interfaz interfaz){
+  
+  public GestorCombate(ConfiguracionJuego configuracionJuego,Jugador jugador,Interfaz interfaz){
+    this.configuracionJuego = configuracionJuego;
     this.jugador = jugador;
     this.interfaz = interfaz;
   }
@@ -23,8 +25,8 @@ public class GestorCombate {
           // Aplicado el multiplicador de daño recibido por dificultad
           int danioOriginal = enemigo.getAtaque();
          
-          Dificultad dificultad = ConfiguracionJuego.getInstancia().getDificultadActual();
-          
+          Dificultad dificultad = configuracionJuego.getDificultadActual();
+
           double multiplicador = dificultad.getMultiplicador();
 
           int danioModificado = (int) (danioOriginal * multiplicador);
