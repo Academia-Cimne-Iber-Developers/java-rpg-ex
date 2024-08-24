@@ -68,7 +68,7 @@ public class Interfaz {
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
         System.out.println("[L]uchar     [Mis]iones"); // Nueva opción para ver misiones
-        System.out.println("[D]ificultad");
+        System.out.println("[Di]ficultad");
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");

@@ -66,7 +66,7 @@ public class ControladorAcciones {
             case "mis":
                 interfaz.mostrarMisiones(juego.getGestorMisiones());
                 break;
-            case "dificultad": {
+            case "di": {
                 Dificultad dificultadSeleccionada = interfaz.seleccionarDificultad();
                 juego.cambiarDificultad(dificultadSeleccionada);
                 break;
