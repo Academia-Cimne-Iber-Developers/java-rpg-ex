@@ -30,6 +30,11 @@ public class GestorExploracion {
     resultado.append("Estás en: ").append(ubicacionActual.getNombre()).append("\n");
     resultado.append(ubicacionActual.getDescripcion()).append("\n");
 
+    if (ubicacionActual.esPuntoViajeRapido() && !ubicacionActual.estaPuntoViajeRapidoDesbloqueado()) {
+      desbloquearPuntoViajeRapido(ubicacionActual);
+      interfaz.mostrarMensaje("Punto de viaje rápido desbloqueado: " + ubicacionActual.getNombre());
+  }
+
     Enemigo enemigo = ubicacionActual.getEnemigoActual();
     if (enemigo == null) {
       resultado.append("- No hay enemigos en esta ubicación.\n");
@@ -49,5 +54,11 @@ public class GestorExploracion {
     gestorMisiones.actualizarMisiones(ubicacionActual.getNombre(), "");
 
     return ubicacionActual;
+
+    private void desbloquearPuntoViajeRapido(Ubicacion ubicacion) {
+      ubicacion.desbloquearPuntoViajeRapido();
   }
+  }
+
+  
 }
