@@ -14,4 +14,21 @@ public enum Dificultad {
   public double getMultiplicador() {
     return multiplicador;
   }
+
+  public String getNombreFormateado() {
+    return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+  }
+
+  public String getClave() {
+    return name().substring(0, 1).toUpperCase();
+  }
+
+  public static Dificultad fromString(String texto) {
+    for (Dificultad dificultad : Dificultad.values()) {
+      if (dificultad.getClave().equalsIgnoreCase(texto)) {
+        return dificultad;
+      }
+    }
+    return null;
+  }
 }

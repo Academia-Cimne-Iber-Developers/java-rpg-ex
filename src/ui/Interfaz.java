@@ -2,7 +2,7 @@ package ui;
 
 import managers.GestorMisiones;
 import models.*;
-
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Interfaz {
@@ -162,23 +162,19 @@ public class Interfaz {
 
     public Dificultad seleccionarDificultad() {
         System.out.println("\n === Elige la dificultad Aventurero ===");
-        System.out.println("[F]acil");
-        System.out.println("[N]ormal");
-        System.out.println("[D]ificil");
 
-        String dificultad = scanner.nextLine().toLowerCase();
+        Arrays.stream(Dificultad.values()).forEach(
+                dificultad -> System.out.println("[" + dificultad.getClave() + "]" + dificultad.getNombreFormateado()));
 
-        switch (dificultad) {
-            case "f":
-                return Dificultad.FACIL;
-            case "n":
-                return Dificultad.NORMAL;
-            case "d":
-                return Dificultad.DIFICIL;
-            default:
-                System.out.println("Selecciona una dificultad válida por favor.");
-                return seleccionarDificultad();
+        String dificultadInput = scanner.nextLine().toUpperCase();
+        Dificultad dificultad = Dificultad.fromString(dificultadInput);
+
+        if (dificultad == null) {
+            System.out.println("Selecciona una dificultad válida por favor.");
+            return seleccionarDificultad();
         }
+
+        return dificultad;
     }
 
     private void pausarPantalla() {
