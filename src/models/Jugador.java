@@ -56,4 +56,8 @@ public class Jugador extends Entidad {
   public void setCapacidadMax(int capacidadMax) {
     this.capacidadMax = capacidadMax;
   }
+
+  public int getDanioBase() {
+    return this.ataque;
+  }
 }

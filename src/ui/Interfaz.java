@@ -2,7 +2,7 @@ package ui;
 
 import managers.GestorMisiones;
 import models.*;
-
+import configurations.ConfiguracionJuego;
 
 import java.util.Scanner;
 
@@ -51,8 +51,10 @@ public class Interfaz {
     }
 
     private void mostrarInfoJugador() {
+        Dificultad dificultad = ConfiguracionJuego.getInstancia().getDificultad();
+        int ataque = (int) (jugador.getAtaque() * (2 - dificultad.getMultiplicador()));
         System.out.println("=== ESTADO DEL JUGADOR ===");
-        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
+        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", jugador.getNombre(), jugador.getVida(), ataque);
         System.out.println("============================");
     }
 
@@ -72,6 +74,15 @@ public class Interfaz {
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");
+    }
+
+    public void mostrarOpcionesDificultad() {
+        System.out.println("Dificultad del juego:");
+        System.out.println("1. Fácil (20% más daño al enemigo)");
+        System.out.println("2. Normal (daño base)");
+        System.out.println("3. Difícil (40% menos daño al enemigo)");
+        System.out.println();
+        System.out.print("Seleccione una opción:");
     }
 
     public String obtenerEntrada() {
