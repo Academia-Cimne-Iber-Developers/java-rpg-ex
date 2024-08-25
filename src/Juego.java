@@ -4,6 +4,7 @@ import managers.GestorInventario;
 import managers.GestorMisiones;
 import models.*;
 import ui.Interfaz;
+import configurations.ConfiguracionJuego;
 
 public class Juego {
     private Mapa mapa;
@@ -63,11 +64,42 @@ public class Juego {
     }
 
     public void iniciar() {
+        //Seleccion de la dificultad antes de iniciar el bucle del juego
+        seleccionarDificultad();
+
         while (true) {
             interfaz.actualizarPantalla();
             String opcion = interfaz.obtenerEntrada();
             controladorAcciones.procesarAccion(opcion);
         }
+    }
+
+    private void seleccionarDificultad() {
+        interfaz.mostrarOpcionesDificultad();
+
+        String opcion = interfaz.obtenerEntrada();
+        Dificultad nuevaDificultad;
+
+        switch (opcion) {
+            case "1":
+                nuevaDificultad = Dificultad.FACIL;
+                interfaz.mostrarMensaje("Dificultad seleccionada: Fácil");
+                break;
+            case "2":
+                nuevaDificultad = Dificultad.NORMAL;
+                interfaz.mostrarMensaje("Dificultad seleccionada: Normal");
+                break;
+            case "3":
+                nuevaDificultad = Dificultad.DIFICIL;
+                interfaz.mostrarMensaje("Dificultad seleccionada: Difícil");
+                break;
+            default:
+                interfaz.mostrarMensaje("Opción no válida. Se mantiene la dificultad Normal.");
+                nuevaDificultad = Dificultad.NORMAL;
+                break;
+        }
+
+        ConfiguracionJuego.getInstancia().setDificultad(nuevaDificultad);
     }
 
     public Ubicacion explorarUbicacion() {

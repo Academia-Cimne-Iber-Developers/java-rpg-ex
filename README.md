@@ -15,6 +15,8 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 - 🏃‍♂️ Moverse entre diferentes lugares
 - 🧪 Recoger y utilizar objetos
 - 📜 Completar misiones mientras exploras
+- 🎚️ Sistema de Dificultad Ajustable - Nuevo: Elige entre diferentes niveles de dificultad para personalizar tu experiencia de juego
+
 
 ---
 
@@ -40,6 +42,16 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 ### 🖥️ Interfaz de Usuario
 - `Interfaz`: Herramienta que nos muestra el juego.
 
+### 🎚️ Sistema de Dificultad
+
+El juego ahora incluye un **Sistema de Dificultad** que permite a los jugadores ajustar el nivel de desafío. 
+
+#### Niveles de Dificultad Disponibles
+
+- **Fácil:** Los enemigos reciben más daño del jugador, facilitando los combates (Multiplicador de daño: 1.2).
+- **Normal:** El daño infligido y recibido es estándar, sin modificaciones (Multiplicador de daño: 1.0).
+- **Difícil:** Los enemigos reciben menos daño del jugador, aumentando la dificultad del combate (Multiplicador de daño: 0.6).
+
 ---
 
 ## 🧠 Principios SOLID Aplicados
@@ -59,8 +71,9 @@ Este proyecto es un juego de RPG basado en texto, desarrollado en Java. Tenemos 
 ## 🚀 Cómo Jugar
 
 1. Ejecutá la clase `Juego`.
-2. Seguí las instrucciones en pantalla para navegar y tomar decisiones.
-3. Explorá, luchá y sobreviví en este mundo de aventuras.
+2. Selecciona el nivel de dificultad.
+3. Seguí las instrucciones en pantalla para navegar y tomar decisiones.
+4. Explorá, luchá y sobreviví en este mundo de aventuras.
 
 ---
 
