@@ -1,3 +1,4 @@
+import managers.ConfiguracionJuego;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
@@ -6,6 +7,7 @@ import models.*;
 import ui.Interfaz;
 
 public class Juego {
+    private ConfiguracionJuego configuracionJuego;
     private Mapa mapa;
     private Jugador jugador;
     private Interfaz interfaz;
@@ -16,12 +18,13 @@ public class Juego {
     private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
 
     public Juego() {
+        configuracionJuego = ConfiguracionJuego.getInstancia();
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
         gestorMisiones = new GestorMisiones(jugador);
         gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
         interfaz = new Interfaz(mapa, jugador);
-        gestorCombate = new GestorCombate(jugador, interfaz);
+        gestorCombate = new GestorCombate(configuracionJuego ,jugador, interfaz);
         gestorInventario = new GestorInventario();
         controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
         inicializarMisiones();
@@ -146,6 +149,14 @@ public class Juego {
     public void agregarNuevaMision(Mision nuevaMision) {
         gestorMisiones.agregarMision(nuevaMision);
         interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
+    }
+    
+    public void cambiarDificultad(Dificultad dificultad) {
+        this.configuracionJuego.setDificultad(dificultad);
+    }
+    
+    public ConfiguracionJuego getConfiguracionJuego() {
+        return this.configuracionJuego;
     }
 
     public static void main(String[] args) {
