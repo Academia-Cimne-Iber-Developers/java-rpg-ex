@@ -3,6 +3,7 @@ package managers;
 import models.Enemigo;
 import models.Jugador;
 import models.Ubicacion;
+import ui.Interfaz;
 import models.Mapa;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class GestorExploracion {
 
     if (ubicacionActual.esPuntoViajeRapido() && !ubicacionActual.estaPuntoViajeRapidoDesbloqueado()) {
       desbloquearPuntoViajeRapido(ubicacionActual);
-      interfaz.mostrarMensaje("Punto de viaje rápido desbloqueado: " + ubicacionActual.getNombre());
+      Interfaz.mostrarMensaje("Punto de viaje rápido desbloqueado: " + ubicacionActual.getNombre());
     }
 
     Enemigo enemigo = ubicacionActual.getEnemigoActual();
@@ -48,7 +49,7 @@ public class GestorExploracion {
       resultado.append("- Enemigo: ").append(enemigo.getNombre()).append(" | Vida: ").append(enemigo.getVida()).append("\n");
     }
 
-    String itemsEnUbicacion = ubicacionActual.getInventario().listarObjetos();
+    String itemsEnUbicacion = ubicacionActual.getInventrio().listarObjetos();
     if (!itemsEnUbicacion.isEmpty()) {
       resultado.append("- Items en esta ubicación:\n");
       resultado.append(itemsEnUbicacion);
@@ -76,9 +77,11 @@ public class GestorExploracion {
   }
 
   public List<Ubicacion> getOpcionesViajeDisponibles() {
+    Ubicacion ubicacionActual = jugador.getUbicacionActual(); // Agregada esta línea
     List<Ubicacion> opcionesDisponibles = ubicacionActual.getUbicacionesAdyacentes();
 
-    for (Ubicacion punto : mapa.getPuntosViajeRapidoDesbloqueados()) {
+    // Agregar puntos de viaje rápido desbloqueados
+    for (Ubicacion punto : mapa.getPuntosViajeRapidoDesbloqueados()) { // Corrección: "getPuntosViajeRapidoDesbloqueados" en lugar de "getPuntoViajeRapidoDesbloqueado"
       opcionesDisponibles.add(punto);
     }
 

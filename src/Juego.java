@@ -19,7 +19,7 @@ public class Juego {
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
         gestorMisiones = new GestorMisiones(jugador);
-        gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
+        gestorExploracion = new GestorExploracion(jugador, gestorMisiones, mapa);
         interfaz = new Interfaz(mapa, jugador);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorInventario = new GestorInventario();
@@ -113,14 +113,14 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventrio(), jugador.getInventario(), nombreItem, cantidad);
     }
 
     public boolean dejarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventrio(), nombreItem, cantidad);
     }
 
     public String usarItem() {

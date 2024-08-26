@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Mapa {
     private Map<String, Ubicacion> ubicaciones;
-    Private List<Ubicación> puntoViajeRapido = new ArrayList<>();
+    private List<Ubicacion> puntoViajeRapido = new ArrayList<>();
     public Mapa() {
         ubicaciones = new HashMap<>();
         inicializarMapa();
@@ -38,27 +38,27 @@ public class Mapa {
     }
 
     public void agregarUbicacion(String nombre, String descripcion) {
-        Ubicacion ubicacionNueva = new Ubicacion(nombre, descripcion);
+        Ubicacion ubicacionNueva = new Ubicacion(nombre, descripcion, puntoViajeRapido, false);
         ubicaciones.put(nombre, ubicacionNueva);
     }
 
     private void agregarItemAUbicacion(String nombreUbicacion, Item item) {
         Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
         if (ubicacion != null) {
-            ubicacion.getInventario().agregarObjeto(item);
+            ubicacion.getInventrio().agregarObjeto(item);
         }
     }
 
     public void desbloquearPuntoViajeRapido(Ubicacion ubicacion) {
-        if (ubicacion.esPuntoViajeRapido() && !puntosViajeRapido.contains(ubicacion)) 
+        if (ubicacion.esPuntoViajeRapido() && !puntoViajeRapido.contains(ubicacion)) 
         {
             ubicacion.desbloquearPuntoViajeRapido();
-            puntosViajeRapido.add(ubicacion);
+            puntoViajeRapido.add(ubicacion);
         }
     }
     
     public List<Ubicacion> getPuntosViajeRapidoDesbloqueados(){
-        return puntosViajeRapido;
+        return puntoViajeRapido;
 
     }
     public Ubicacion getUbicacion(String nombre) {
