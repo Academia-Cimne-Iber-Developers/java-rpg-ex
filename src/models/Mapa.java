@@ -2,16 +2,17 @@ package models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mapa {
     private Map<String, Ubicacion> ubicaciones;
-
+    private List<Ubicacion> puntoViajeRapido = new ArrayList<>();
     public Mapa() {
         ubicaciones = new HashMap<>();
         inicializarMapa();
     }
-
-    private void inicializarMapa() {
+        private void inicializarMapa() {
         agregarUbicacion("Pueblo Inicio", "Un pequeño pueblo donde comienza tu aventura.");
         agregarUbicacion("Bosque Oscuro", "Un denso bosque lleno de criaturas misteriosas.");
         agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
@@ -37,17 +38,29 @@ public class Mapa {
     }
 
     public void agregarUbicacion(String nombre, String descripcion) {
-        Ubicacion ubicacionNueva = new Ubicacion(nombre, descripcion);
+        Ubicacion ubicacionNueva = new Ubicacion(nombre, descripcion, puntoViajeRapido, false);
         ubicaciones.put(nombre, ubicacionNueva);
     }
 
     private void agregarItemAUbicacion(String nombreUbicacion, Item item) {
         Ubicacion ubicacion = ubicaciones.get(nombreUbicacion);
         if (ubicacion != null) {
-            ubicacion.getInventario().agregarObjeto(item);
+            ubicacion.getInventrio().agregarObjeto(item);
         }
     }
 
+    public void desbloquearPuntoViajeRapido(Ubicacion ubicacion) {
+        if (ubicacion.esPuntoViajeRapido() && !puntoViajeRapido.contains(ubicacion)) 
+        {
+            ubicacion.desbloquearPuntoViajeRapido();
+            puntoViajeRapido.add(ubicacion);
+        }
+    }
+    
+    public List<Ubicacion> getPuntosViajeRapidoDesbloqueados(){
+        return puntoViajeRapido;
+
+    }
     public Ubicacion getUbicacion(String nombre) {
         return ubicaciones.get(nombre);
     }
