@@ -2,16 +2,17 @@ package models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mapa {
     private Map<String, Ubicacion> ubicaciones;
-
+    Private List<Ubicación> puntoViajeRapido = new ArrayList<>();
     public Mapa() {
         ubicaciones = new HashMap<>();
         inicializarMapa();
     }
-
-    private void inicializarMapa() {
+        private void inicializarMapa() {
         agregarUbicacion("Pueblo Inicio", "Un pequeño pueblo donde comienza tu aventura.");
         agregarUbicacion("Bosque Oscuro", "Un denso bosque lleno de criaturas misteriosas.");
         agregarUbicacion("Montaña Nevada", "Una imponente montaña cubierta de nieve.");
@@ -48,6 +49,18 @@ public class Mapa {
         }
     }
 
+    public void desbloquearPuntoViajeRapido(Ubicacion ubicacion) {
+        if (ubicacion.esPuntoViajeRapido() && !puntosViajeRapido.contains(ubicacion)) 
+        {
+            ubicacion.desbloquearPuntoViajeRapido();
+            puntosViajeRapido.add(ubicacion);
+        }
+    }
+    
+    public List<Ubicacion> getPuntosViajeRapidoDesbloqueados(){
+        return puntosViajeRapido;
+
+    }
     public Ubicacion getUbicacion(String nombre) {
         return ubicaciones.get(nombre);
     }
