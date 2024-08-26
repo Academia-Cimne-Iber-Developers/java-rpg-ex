@@ -66,6 +66,11 @@ public class ControladorAcciones {
             case "mis":
                 interfaz.mostrarMisiones(juego.getGestorMisiones());
                 break;
+            case "c":
+                interfaz.mostrarOpcionesDificultad();
+                String opcionDificultad = interfaz.obtenerEntrada();
+                juego.cambiarDificultad(opcionDificultad);
+                break;
             default: {
                 String mensajeError = "Opción no válida";
                 interfaz.mostrarMensaje(mensajeError);
