@@ -66,9 +66,9 @@ public class Interfaz {
 
     private void mostrarOpciones() {
         System.out.println("\n¿Qué querés hacer?");
-        System.out.println("[E]xplorar   [M]over   [V]er mapa");
-        System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[L]uchar     [Mis]iones");  // Nueva opción para ver misiones
+        System.out.println("[E]xplorar   [M]over     [V]er mapa");
+        System.out.println("[I]nventario [R]ecoger   [U]sar [D]ejar item");
+        System.out.println("[L]uchar     [Mis]iones  [C] cambiar dificultad");
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");
@@ -160,5 +160,13 @@ public class Interfaz {
     private void pausarPantalla() {
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
+    }
+
+    public void mostrarOpcionesDificultad() {
+        System.out.println("\n=== CAMBIAR DIFICULTAD ===");
+        System.out.println("[1] Fácil");
+        System.out.println("[2] Normal");
+        System.out.println("[3] Difícil");
+        System.out.print("Elegí una opción: ");
     }
 }

@@ -52,7 +52,8 @@ public class Juego {
             interfaz.mostrarMensaje(resultado);
             interfaz.mostrarResultadoViaje(true, destino);
 
-            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva Profunda"
+            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva
+            // Profunda"
             if (destino.equals("Cueva Profunda")) {
                 agregarNuevaMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
             }
@@ -70,11 +71,32 @@ public class Juego {
         }
     }
 
+    public void cambiarDificultad(String opcion) {
+        Dificultad nuevaDificultad;
+        switch (opcion) {
+            case "1":
+                nuevaDificultad = Dificultad.FACIL;
+                break;
+            case "2":
+                nuevaDificultad = Dificultad.NORMAL;
+                break;
+            case "3":
+                nuevaDificultad = Dificultad.DIFICIL;
+                break;
+            default:
+                interfaz.mostrarMensaje("Opción no válida");
+                return;
+        }
+        ConfiguracionJuego.getInstancia().setDificultad(nuevaDificultad);
+        interfaz.mostrarMensaje("Dificultad cambiada a: " + nuevaDificultad);
+    }
+
     public Ubicacion explorarUbicacion() {
         String resultado = String.valueOf(gestorExploracion.explorarUbicacion());
         interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
 
-        // Muestra el progreso o finalización de todas las misiones activas después de explorar
+        // Muestra el progreso o finalización de todas las misiones activas después de
+        // explorar
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             interfaz.mostrarInfoMision(mision);
         }
@@ -88,7 +110,8 @@ public class Juego {
                 jugador.getUbicacionActual().eliminarEnemigo();
                 String enemigoDerrotado = enemigo.getNombre();
 
-                // Actualizar la misión con el nombre del enemigo derrotado inmediatamente después de la pelea
+                // Actualizar la misión con el nombre del enemigo derrotado inmediatamente
+                // después de la pelea
                 gestorMisiones.actualizarMisiones(jugador.getUbicacionActual().getNombre(), enemigoDerrotado);
 
                 interfaz.mostrarResultadoCombate("Has derrotado a " + enemigoDerrotado, gestorMisiones);
@@ -105,7 +128,7 @@ public class Juego {
         return gestorCombate;
     }
 
-    public String verMapa(){
+    public String verMapa() {
         return gestorExploracion.verMapa(mapa);
     }
 
@@ -113,14 +136,16 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(),
+                nombreItem, cantidad);
     }
 
     public boolean dejarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(),
+                nombreItem, cantidad);
     }
 
     public String usarItem() {
