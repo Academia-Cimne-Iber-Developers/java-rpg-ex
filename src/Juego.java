@@ -1,3 +1,4 @@
+import managers.ConfiguracionJuego;
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
@@ -6,6 +7,7 @@ import models.*;
 import ui.Interfaz;
 
 public class Juego {
+    private ConfiguracionJuego configuracionJuego;
     private Mapa mapa;
     private Jugador jugador;
     private Interfaz interfaz;
@@ -16,12 +18,13 @@ public class Juego {
     private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
 
     public Juego() {
+        configuracionJuego = ConfiguracionJuego.getInstancia();
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
         gestorMisiones = new GestorMisiones(jugador);
         gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
         interfaz = new Interfaz(mapa, jugador);
-        gestorCombate = new GestorCombate(jugador, interfaz);
+        gestorCombate = new GestorCombate(configuracionJuego ,jugador, interfaz);
         gestorInventario = new GestorInventario();
         controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
         inicializarMisiones();
@@ -52,7 +55,8 @@ public class Juego {
             interfaz.mostrarMensaje(resultado);
             interfaz.mostrarResultadoViaje(true, destino);
 
-            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva Profunda"
+            // Ejemplo de agregar una nueva misión cuando el jugador llega a la "Cueva
+            // Profunda"
             if (destino.equals("Cueva Profunda")) {
                 agregarNuevaMision(new MisionExploracion("Explora la cueva profunda", "Cueva Profunda", 1));
             }
@@ -74,7 +78,8 @@ public class Juego {
         String resultado = String.valueOf(gestorExploracion.explorarUbicacion());
         interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
 
-        // Muestra el progreso o finalización de todas las misiones activas después de explorar
+        // Muestra el progreso o finalización de todas las misiones activas después de
+        // explorar
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             interfaz.mostrarInfoMision(mision);
         }
@@ -88,7 +93,8 @@ public class Juego {
                 jugador.getUbicacionActual().eliminarEnemigo();
                 String enemigoDerrotado = enemigo.getNombre();
 
-                // Actualizar la misión con el nombre del enemigo derrotado inmediatamente después de la pelea
+                // Actualizar la misión con el nombre del enemigo derrotado inmediatamente
+                // después de la pelea
                 gestorMisiones.actualizarMisiones(jugador.getUbicacionActual().getNombre(), enemigoDerrotado);
 
                 interfaz.mostrarResultadoCombate("Has derrotado a " + enemigoDerrotado, gestorMisiones);
@@ -105,7 +111,7 @@ public class Juego {
         return gestorCombate;
     }
 
-    public String verMapa(){
+    public String verMapa() {
         return gestorExploracion.verMapa(mapa);
     }
 
@@ -113,14 +119,16 @@ public class Juego {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a recoger: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a recoger: "));
 
-        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getUbicacionActual().getInventario(), jugador.getInventario(),
+                nombreItem, cantidad);
     }
 
     public boolean dejarItem() {
         String nombreItem = interfaz.pedirEntrada("Nombre del item a dejar: ");
         int cantidad = Integer.parseInt(interfaz.pedirEntrada("Cantidad a dejar: "));
 
-        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(), nombreItem, cantidad);
+        return gestorInventario.moverObjeto(jugador.getInventario(), jugador.getUbicacionActual().getInventario(),
+                nombreItem, cantidad);
     }
 
     public String usarItem() {
@@ -141,6 +149,14 @@ public class Juego {
     public void agregarNuevaMision(Mision nuevaMision) {
         gestorMisiones.agregarMision(nuevaMision);
         interfaz.mostrarMensaje("¡Nueva misión obtenida: " + nuevaMision.getDescripcion() + "!");
+    }
+    
+    public void cambiarDificultad(Dificultad dificultad) {
+        this.configuracionJuego.setDificultad(dificultad);
+    }
+    
+    public ConfiguracionJuego getConfiguracionJuego() {
+        return this.configuracionJuego;
     }
 
     public static void main(String[] args) {
