@@ -4,12 +4,15 @@ import models.Enemigo;
 import models.Jugador;
 import models.Ubicacion;
 import ui.Interfaz;
+import models.Dificultad;
 
 public class GestorCombate {
+  private ConfiguracionJuego configuracionJuego;
   private Jugador jugador;
   private Interfaz interfaz;
-
-  public GestorCombate(Jugador jugador,Interfaz interfaz){
+  
+  public GestorCombate(ConfiguracionJuego configuracionJuego,Jugador jugador,Interfaz interfaz){
+    this.configuracionJuego = configuracionJuego;
     this.jugador = jugador;
     this.interfaz = interfaz;
   }
@@ -18,6 +21,18 @@ public class GestorCombate {
     while (jugador.estaVivo() && enemigo.estaVivo()){
         interfaz.mostrarMensaje(jugador.atacar(enemigo));
         if (enemigo.estaVivo()) {
+
+          // Aplicado el multiplicador de daño recibido por dificultad
+          int danioOriginal = enemigo.getAtaque();
+         
+          Dificultad dificultad = configuracionJuego.getDificultadActual();
+
+          double multiplicador = dificultad.getMultiplicador();
+
+          int danioModificado = (int) (danioOriginal * multiplicador);
+
+          jugador.recibirDanio(danioModificado);
+
           interfaz.mostrarMensaje(enemigo.atacar(jugador));
         }
         interfaz.mostrarMensaje("Vida jugador: " + jugador.getVida() + " | Vida enemigo: " + enemigo.getVida());
