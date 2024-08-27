@@ -78,7 +78,7 @@ public class Interfaz {
         return scanner.nextLine().toLowerCase();
     }
 
-    public void mostrarMensaje(String mensaje) {
+    public static void mostrarMensaje(String mensaje) {
         System.out.println("\n" + mensaje);
         pausarPantalla();
     }
@@ -157,7 +157,7 @@ public class Interfaz {
         pausarPantalla();
     }
 
-    private void pausarPantalla() {
+    private static void pausarPantalla() {
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
     }
