@@ -27,7 +27,7 @@ public class Ubicacion {
 
     public void eliminarEnemigo(){
         this.enemigoActual = null;
-    }
+    } 
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -56,3 +56,4 @@ public class Ubicacion {
         return inventario;
     }
 }
+

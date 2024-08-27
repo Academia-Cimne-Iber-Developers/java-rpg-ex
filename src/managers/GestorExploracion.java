@@ -37,7 +37,6 @@ public class GestorExploracion {
         resultado.append("- Enemigo: ").append(enemigo.getNombre())
                  .append(" | Vida: ").append(enemigo.getVida()).append("\n");
     }
-
     String itemsEnUbicacion = ubicacionActual.getInventario().listarObjetos();
     if (!itemsEnUbicacion.isEmpty()) {
         resultado.append("- Items en esta ubicación:\n");
@@ -45,7 +44,7 @@ public class GestorExploracion {
     } else {
         resultado.append("- No hay items para recoger aquí.\n");
     }
-
     return resultado.toString();
   }
 }
+
