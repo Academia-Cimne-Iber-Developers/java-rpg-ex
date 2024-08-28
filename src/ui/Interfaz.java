@@ -1,8 +1,7 @@
-package ui;
+package InterfazUsuario;
 
 import managers.GestorMisiones;
 import models.*;
-
 
 import java.util.Scanner;
 
@@ -44,121 +43,42 @@ public class Interfaz {
         pausarPantalla();
     }
 
-
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
     }
 
     private void mostrarInfoJugador() {
-        System.out.println("=== ESTADO DEL JUGADOR ===");
-        System.out.printf("Nombre: %s | Vida: %d | Ataque: %d\n", jugador.getNombre(), jugador.getVida(), jugador.getAtaque());
-        System.out.println("============================");
+        System.out.println("=== Información del Jugador ===");
+        System.out.println("Nombre: " + jugador.getNombre());
+        System.out.println("Vida: " + jugador.getVida());
+        System.out.println("Ataque: " + jugador.getAtaque());
     }
 
     private void mostrarUbicacionActual() {
-        Ubicacion ubicacionActual = jugador.getUbicacionActual();
-        System.out.println("\n=== UBICACIÓN ACTUAL ===");
-        System.out.println(ubicacionActual.getNombre());
-        System.out.println(ubicacionActual.getDescripcion());
-        System.out.println("=========================");
+        System.out.println("=== Ubicación Actual ===");
+        System.out.println(jugador.getUbicacionActual().getDescripcion());
     }
 
     private void mostrarOpciones() {
-        System.out.println("\n¿Qué querés hacer?");
-        System.out.println("[E]xplorar   [M]over   [V]er mapa");
-        System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[L]uchar     [Mis]iones");  // Nueva opción para ver misiones
-        System.out.println("====================================");
-        System.out.println("[S]alir");
-        System.out.print("Elegí una opción: ");
-    }
-
-    public String obtenerEntrada() {
-        return scanner.nextLine().toLowerCase();
+        System.out.println("=== Opciones ===");
+        System.out.println("1. Ver Inventario");
+        System.out.println("2. Mostrar Mapa");
+        System.out.println("3. Realizar Combate");
+        System.out.println("4. Ver Misiones");
+        System.out.println("5. Salir");
     }
 
     public void mostrarMensaje(String mensaje) {
-        System.out.println("\n" + mensaje);
-        pausarPantalla();
+        System.out.println(mensaje);
     }
 
-    public void mostrarInventario() {
-        System.out.println("\n=== INVENTARIO ===");
-        String resultado = jugador.mostrarInventario();
-        System.out.println(resultado);
-        System.out.println("==================");
-        pausarPantalla();
-    }
-
-    public void mostrarResultadoExploracion(String resultado, GestorMisiones gestorMisiones) {
-        System.out.println("\n=== RESULTADO DE LA EXPLORACIÓN ===");
-        System.out.println(resultado);
-        System.out.println("====================================");
-
-        // Verificar si alguna misión se ha completado después de la exploración
-        for (Mision mision : gestorMisiones.getMisionesActivas()) {
-            if (mision instanceof MisionExploracion) {
-                MisionExploracion misionExploracion = (MisionExploracion) mision;
-                if (misionExploracion.esCompletada()) {
-                    System.out.println("¡Has completado la misión: " + misionExploracion.getDescripcion() + "!");
-                } else {
-                    System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " (" + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
-                }
-            }
-        }
-        pausarPantalla();
-    }
-
-    public void mostrarInfoMision(Mision mision) {
-        if (mision instanceof MisionExploracion) {
-            MisionExploracion misionExploracion = (MisionExploracion) mision;
-            if (misionExploracion.esCompletada()) {
-                System.out.println("¡Has completado la misión: " + misionExploracion.getDescripcion() + "!");
-            } else {
-                System.out.println("Progreso en misión: " + misionExploracion.getDescripcion() + " (" + misionExploracion.getVecesVisitada() + "/" + misionExploracion.getVecesRequeridas() + ")");
-            }
-        } else if (mision instanceof MisionCombate) {
-            MisionCombate misionCombate = (MisionCombate) mision;
-            if (misionCombate.esCompletada()) {
-                System.out.println("¡Has completado la misión: " + misionCombate.getDescripcion() + "!");
-            } else {
-                System.out.println("Progreso en misión: " + misionCombate.getDescripcion() + " (" + misionCombate.getCantidadDerrotada() + "/" + misionCombate.getCantidadRequerida() + ")");
-            }
-        }
-    }
-
-
-    public String pedirDestinoViaje() {
-        System.out.print("\n¿A dónde quieres ir?: ");
+    public String obtenerEntrada() {
         return scanner.nextLine();
     }
 
-    public void mostrarResultadoViaje(boolean exito, String destino) {
-        if (exito) {
-            System.out.println("\nHas viajado con éxito a " + destino);
-        } else {
-            System.out.println("\nNo puedes viajar a " + destino);
-        }
-        pausarPantalla();
-    }
-
-    public void mostrarResultadoCombate(String resultado, GestorMisiones gestorMisiones) {
-        System.out.println("\n=== RESULTADO DEL COMBATE ===");
-        System.out.println(resultado);
-        System.out.println("====================================");
-
-        for (Mision mision : gestorMisiones.getMisionesActivas()) {
-            if (mision instanceof MisionCombate) {
-                MisionCombate misionCombate = (MisionCombate) mision;
-                mostrarInfoMision(misionCombate);
-            }
-        }
-        pausarPantalla();
-    }
-
     private void pausarPantalla() {
-        System.out.print("Presioná ENTER para continuar...");
+        System.out.println("Presiona Enter para continuar...");
         scanner.nextLine();
     }
 }
