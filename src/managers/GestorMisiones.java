@@ -1,12 +1,11 @@
 package managers;
 
+import java.util.ArrayList;
+import java.util.List;
 import models.Jugador;
 import models.Mision;
 import models.MisionCombate;
 import models.MisionExploracion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GestorMisiones {
     private List<Mision> misionesActivas;
