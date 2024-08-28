@@ -1,3 +1,5 @@
+
+
 import managers.GestorCombate;
 import managers.GestorExploracion;
 import managers.GestorInventario;
@@ -13,17 +15,17 @@ public class Juego {
     private GestorExploracion gestorExploracion;
     private GestorInventario gestorInventario;
     private GestorMisiones gestorMisiones;
-    private ControladorAcciones controladorAcciones; // Declarar el controlador de acciones
+    private ControladorAcciones controladorAcciones;
 
     public Juego() {
         mapa = new Mapa();
         jugador = new Jugador("Link", mapa.getUbicacion("Pueblo Inicio"));
         gestorMisiones = new GestorMisiones(jugador);
         gestorExploracion = new GestorExploracion(jugador, gestorMisiones);
-        interfaz = new Interfaz(mapa, jugador);
+        interfaz = new Interfaz(mapa, jugador, gestorExploracion);
         gestorCombate = new GestorCombate(jugador, interfaz);
         gestorInventario = new GestorInventario();
-        controladorAcciones = new ControladorAcciones(this, interfaz); // Inicializar el controlador de acciones
+        controladorAcciones = new ControladorAcciones(this, interfaz);
         inicializarMisiones();
     }
 
@@ -45,7 +47,7 @@ public class Juego {
     }
 
     public String moverJugador() {
-        String destino = interfaz.pedirDestinoViaje();
+        String destino = interfaz.pedirDestinoViaje(mapa); 
         Ubicacion nuevaUbicacion = mapa.getUbicacion(destino);
         if (nuevaUbicacion != null) {
             String resultado = gestorExploracion.viajar(nuevaUbicacion);
@@ -70,20 +72,23 @@ public class Juego {
         }
     }
 
-    public Ubicacion explorarUbicacion() {
-        String resultado = String.valueOf(gestorExploracion.explorarUbicacion());
+    public String explorarUbicacion() {
+        Ubicacion ubicacionActual = gestorExploracion.explorarUbicacion(); 
+        String resultado = ubicacionActual != null ? ubicacionActual.getNombre() : "Ubicación no encontrada"; 
+    
         interfaz.mostrarResultadoExploracion(resultado, gestorMisiones);
-
+    
         // Muestra el progreso o finalización de todas las misiones activas después de explorar
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             interfaz.mostrarInfoMision(mision);
         }
-        return null;
+    
+        return resultado; // Devolvemos el nombre de la ubicación
     }
-
     public void luchar(Enemigo enemigo) {
         if (enemigo != null) {
             gestorCombate.pelear(enemigo);
+
             if (jugador.estaVivo()) {
                 jugador.getUbicacionActual().eliminarEnemigo();
                 String enemigoDerrotado = enemigo.getNombre();
