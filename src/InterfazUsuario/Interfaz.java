@@ -1,4 +1,4 @@
-package ui;
+package InterfazUsuario;
 
 import managers.GestorMisiones;
 import models.*;
