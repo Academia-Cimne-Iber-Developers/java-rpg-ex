@@ -1,10 +1,9 @@
 package ui;
 
+import java.util.List;
+import java.util.Scanner;
 import managers.GestorMisiones;
 import models.*;
-
-
-import java.util.Scanner;
 
 public class Interfaz {
     private static final Scanner scanner = new Scanner(System.in);
@@ -44,7 +43,6 @@ public class Interfaz {
         pausarPantalla();
     }
 
-
     public String pedirEntrada(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
@@ -68,7 +66,7 @@ public class Interfaz {
         System.out.println("\n¿Qué querés hacer?");
         System.out.println("[E]xplorar   [M]over   [V]er mapa");
         System.out.println("[I]nventario [R]ecoger [U]sar [D]ejar item");
-        System.out.println("[L]uchar     [Mis]iones");  // Nueva opción para ver misiones
+        System.out.println("[L]uchar     [Mis]iones");
         System.out.println("====================================");
         System.out.println("[S]alir");
         System.out.print("Elegí una opción: ");
@@ -96,7 +94,7 @@ public class Interfaz {
         System.out.println(resultado);
         System.out.println("====================================");
 
-        // Verificar si alguna misión se ha completado después de la exploración
+
         for (Mision mision : gestorMisiones.getMisionesActivas()) {
             if (mision instanceof MisionExploracion) {
                 MisionExploracion misionExploracion = (MisionExploracion) mision;
@@ -128,8 +126,27 @@ public class Interfaz {
         }
     }
 
+    public String pedirDestinoViaje(Mapa mapa) {
+        System.out.println("\n=== OPCIONES DE VIAJE DISPONIBLES ===");
 
-    public String pedirDestinoViaje() {
+
+        List<Ubicacion> adyacentes = jugador.getUbicacionActual().getUbicacionesAdyacentes();
+        if (!adyacentes.isEmpty()) {
+            System.out.println("Ubicaciones adyacentes:");
+            for (Ubicacion ubicacion : adyacentes) {
+                System.out.println("- " + ubicacion.getNombre());
+            }
+        }
+
+
+        List<Ubicacion> puntosViajeRapido = mapa.getPuntosViajeRapidoDesbloqueados();
+        if (!puntosViajeRapido.isEmpty()) {
+            System.out.println("Puntos de viaje rápido desbloqueados:");
+            for (Ubicacion ubicacion : puntosViajeRapido) {
+                System.out.println("- " + ubicacion.getNombre());
+            }
+        }
+
         System.out.print("\n¿A dónde quieres ir?: ");
         return scanner.nextLine();
     }
