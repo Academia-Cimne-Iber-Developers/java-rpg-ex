@@ -63,6 +63,11 @@ public class ControladorAcciones {
                 System.exit(0);
                 break;
             }
+            case "t": {
+                String resultadoMovimiento = juego.moverJugador();
+                interfaz.mostrarMensaje(resultadoMovimiento);
+                break;
+            }
             case "mis":
                 interfaz.mostrarMisiones(juego.getGestorMisiones());
                 break;
