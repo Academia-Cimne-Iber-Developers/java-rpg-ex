@@ -161,4 +161,14 @@ public class Interfaz {
         System.out.print("Presioná ENTER para continuar...");
         scanner.nextLine();
     }
+    //Para mostrar las opciones de combate
+    public void opcionesCombate() {
+        System.out.println("\nElige una accion");
+        System.out.println("\n1. Atacar");
+        System.out.println("\n2. Bloquear");
+        System.out.println("\n3. Cargar ");
+        System.out.println("\n4. Curarse");
+        System.out.println("====================================");
+        System.out.print("Elegí una opción: ");
+      }
 }

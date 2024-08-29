@@ -4,6 +4,7 @@ public class Jugador extends Entidad {
   private InventarioJugador inventario;
   private Ubicacion ubicacionActual;
   private int capacidadMax = 100;
+  private boolean bloqueando;
 
   public Jugador(String nombre, Ubicacion ubicacionInicial) {
     super(nombre, 100, 15);
@@ -13,8 +14,11 @@ public class Jugador extends Entidad {
 
   @Override
   public void recibirDanio(int danio) {
-      this.vida -= danio;
-      if (this.vida < 0) this.vida = 0;
+    if (bloqueando){
+      danio /= 2; //para reducir el daño recibido en un 50%
+      bloqueando = false; //desbloqueo 
+    }
+    this.vida -= danio;
   }
 
   @Override
@@ -55,5 +59,9 @@ public class Jugador extends Entidad {
 
   public void setCapacidadMax(int capacidadMax) {
     this.capacidadMax = capacidadMax;
+  }
+
+  public void setBloqueando(boolean bloqueando) {
+    this.bloqueando = bloqueando;
   }
 }
