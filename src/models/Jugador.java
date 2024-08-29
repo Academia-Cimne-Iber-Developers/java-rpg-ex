@@ -1,59 +1,68 @@
 package models;
 
 public class Jugador extends Entidad {
-  private InventarioJugador inventario;
-  private Ubicacion ubicacionActual;
-  private int capacidadMax = 100;
+    private InventarioJugador inventario;
+    private Ubicacion ubicacionActual;
+    private int capacidadMax = 100;
+    private boolean bloqueando = false; // Nuevo atributo para bloquear
 
-  public Jugador(String nombre, Ubicacion ubicacionInicial) {
-    super(nombre, 100, 15);
-    this.inventario = new InventarioJugador(capacidadMax);
-    this.ubicacionActual = ubicacionInicial;
-  }
+    public Jugador(String nombre, Ubicacion ubicacionInicial) {
+        super(nombre, 100, 15);
+        this.inventario = new InventarioJugador(capacidadMax);
+        this.ubicacionActual = ubicacionInicial;
+    }
 
-  @Override
-  public void recibirDanio(int danio) {
-      this.vida -= danio;
-      if (this.vida < 0) this.vida = 0;
-  }
+    @Override
+    public void recibirDanio(int danio) {
+        if (bloqueando) {
+            danio *= 0.5; // Reduce el daño en un 50%
+            bloqueando = false;
+        }
+        this.vida -= danio;
+        if (this.vida < 0) this.vida = 0;
+    }
 
-  @Override
-  public String atacar(Entidad objetivo) {
-    String resultado = "";
-    objetivo.recibirDanio(this.ataque);
-    resultado += (this.nombre + " ataca a " + objetivo.getNombre() + " causando " + this.ataque + " puntos de daño.");
-    return resultado;
-}
+    @Override
+    public String atacar(Entidad objetivo) {
+        String resultado = "";
+        objetivo.recibirDanio(this.ataque);
+        resultado += (this.nombre + " ataca a " + objetivo.getNombre() + " causando " + this.ataque + " puntos de daño.");
+        return resultado;
+    }
 
-  public void curarse(int cantidadCuracion, String nombre) {
-    this.vida = Math.min(100, getVida() + cantidadCuracion);
-  }
+    public void curarse(int cantidadCuracion, String nombre) {
+        this.vida = Math.min(100, getVida() + cantidadCuracion);
+    }
 
-  public String mostrarInventario() {
-    return inventario.listarObjetos();
-  }
+    public String mostrarInventario() {
+        return inventario.listarObjetos();
+    }
 
-  public Ubicacion getUbicacionActual() {
-    return ubicacionActual;
-  }
+    public Ubicacion getUbicacionActual() {
+        return ubicacionActual;
+    }
 
-  public InventarioJugador getInventario() {
-    return inventario;
-  }
+    public InventarioJugador getInventario() {
+        return inventario;
+    }
 
-  public void setInventario(InventarioJugador inventario) {
-    this.inventario = inventario;
-  }
+    public void setInventario(InventarioJugador inventario) {
+        this.inventario = inventario;
+    }
 
-  public void setUbicacionActual(Ubicacion ubicacionActual) {
-    this.ubicacionActual = ubicacionActual;
-  }
+    public void setUbicacionActual(Ubicacion ubicacionActual) {
+        this.ubicacionActual = ubicacionActual;
+    }
 
-  public int getCapacidadMax() {
-    return capacidadMax;
-  }
+    public int getCapacidadMax() {
+        return capacidadMax;
+    }
 
-  public void setCapacidadMax(int capacidadMax) {
-    this.capacidadMax = capacidadMax;
-  }
+    public void setCapacidadMax(int capacidadMax) {
+        this.capacidadMax = capacidadMax;
+    }
+
+    public void setBloqueando(boolean bloqueando) {
+        this.bloqueando = bloqueando;
+    }
 }
